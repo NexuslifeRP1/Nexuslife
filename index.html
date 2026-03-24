@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexus Life</title>
+<style>
+body{margin:0;font-family:Arial;height:100vh;display:flex;justify-content:center;align-items:center;background:url("fond.jpg") center/cover no-repeat;color:white;text-align:center}
+.overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6)}
+.container{position:relative;z-index:2;background:rgba(0,0,0,.7);padding:40px;border-radius:20px;box-shadow:0 0 30px rgba(0,0,0,.8);display:flex;flex-direction:column;align-items:center}
+.btn{padding:15px;border:none;border-radius:10px;cursor:pointer;background:linear-gradient(45deg,#007bff,#ff6a00);color:white;margin:10px;width:200px}
+#reglement{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:url("fond-reglement.jpg") center/cover no-repeat;color:white;z-index:999}
+
+
+/* SCAN EFFECT */
+@keyframes scan {
+  0% { top:0; }
+  100% { top:100%; }
+}
+.scan-line{
+  position:absolute;
+  width:100%;
+  height:2px;
+  background:rgba(0,255,200,0.7);
+  animation:scan 2s linear infinite;
+}
+
+/* TERMINAL STYLE */
+#reglement{
+  font-family: "Courier New", monospace;
+}
+
+</style>
+</head>
+<body>
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+window.addEventListener("load", function(){
+  const m = document.getElementById("bgMusic");
+  m.volume = 0.5;
+  const playPromise = m.play();
+  if(playPromise !== undefined){
+    playPromise.catch(()=>{
+      document.addEventListener("click", function(){ m.play(); }, { once:true });
+    });
+  }
+});
+</script>
+
+<script>
+function setVolumeDefault(){
+  const m=document.getElementById('bgMusic');
+  m.volume=0.5;
+}
+setVolumeDefault();
+</script>
+<div class="overlay"></div>
+<div class="container">
+<h1>Bienvenue</h1>
+<h2>Bienvenue sur le forum</h2>
+<button class="btn" onclick="openReglement()">Règlement</button>
+<button class="btn">Nous rejoindre</button>
+<button class="btn" onclick="window.open('https://discord.gg/FjWEc4Dh','_blank')">Discord</button>
+</div>
+
+<audio id="radioSound" preload="auto" src="radio.mp3"></audio>
+
+<div id="reglement"><div style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);"></div><div style="position:relative;height:100%;">
+<div style="height:100%;position:relative">
+<div class="scan-line"></div>
+
+<div style="position:absolute;top:20px;left:20px;z-index:1000;cursor:pointer;font-size:30px;" onclick="closeReglement()">⬅</div>
+<style>
+@keyframes glowArrow {
+  0% { text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc; transform: translateX(0); }
+  50% { text-shadow: 0 0 15px #00ffcc, 0 0 25px #00ffcc; transform: translateX(-5px); }
+  100% { text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc; transform: translateX(0); }
+}
+
+.arrow-anim {
+  animation: glowArrow 1.5s infinite;
+  color: #00ffcc;
+}
+</style>
+<script>
+document.querySelectorAll("div[onclick='closeReglement()']")[0].classList.add("arrow-anim");
+</script>
+
+<div style="padding:20px;overflow:auto;height:100%">
+
+<h1>RÈGLEMENT COMPLET</h1>
+
+<h2 id="art1">Art.1 : En jeu</h2>
+  <p>Un microphone est obligatoire pour jouer sur Nexus Life.
+	En jeu, le seul moyen de communication autorisé est le Task Force Radio.
+	L'utilisation d'over Wolf est interdite.</p>
+
+  <h2 id="art2">Art.2 : Nom RP</h2>
+  <p>  Merci de mettre le même nom/prénom RP sur toutes les plateformes du serveur (Forum, Teamspeak, Discord, Arma).
+	Les noms de personnalités existantes, qu'elles soient réelles ou fictives ainsi que les jeux de mots, sont interdits (ex : Pablo Escobar, Jean Tempa, …).
+	Si votre nom déroge à l'une de ces deux règles, le Staff se réserve le droit de vous le changer.</p>
+
+  <h2 id="art3">Art.3 : Freekill</h2>
+  <p>Est interdit.
+	Est considéré comme "Freekill" l'action de tuer une personne sans interaction ou sommation préalable.
+	Celui-ci est formellement interdit.</p>
+
+  <h2 id="art4">Art.4 : Méta Gaming</h2>
+  <p>Est interdit.
+	Sur Nexus Life, est considéré comme "Méta gaming" l'utilisation d'informations en jeu reçues en dehors du cadre RP (IG/Section Roleplay du forum).</p>
+
+  <h2 id="art5">Art.5 : Power Gaming</h2>
+  <p>	Est interdit.
+	Sur Nexus Life, est considéré comme étant du "Power gaming" l'exploitation de mécaniques de jeu non RP (ex : si vous sautez d’un pont et qu’un pompier vous demande votre de douleur de 1 à 10, ne répondez pas 1).</p>
+
+  <h2 id="art6">Art.6 : Use Bug</h2>
+  <p>Son interdits.
+	Toute découverte de bugs, aussi divers sont-ils, doivent être rapportés à un membre du staff.
+	Exploiter une faille du jeu/serveur, peu importe la fin, est strictement interdit. S'asseoir dans un véhicule à une place bugué est considéré comme un use bug (sous le véhicule, être à 3 dans le coffre...).</p>
+
+  <h2 id="art7">Art.7 : Les Cheats/Hack/Injecteur/Lag Switch</h2>
+  <p>	Bénéficie d'une tolérance zéro : ban permanent et définitif du serveur. Impossibilité de faire une demande de deban.
+	Interdiction d'utiliser des logiciels externes impactant Arma III (AutoHotkey...).</p>
+
+  <h2 id="art8">Art.8 : Le HRP vocal en interaction RP</h2>
+  <p>Il est interdit.
+	Ne pas aborder, employer de sujet ou de langage non adapté au RP contextuel du serveur (Ex : vous vous faites arrêter par la gendarmerie et vous leur dites "il faut que je déco laissez-moi partir.") vous devez trouver une alternative RP pour ne pas nuire aux autres joueurs.
+	Le HRP hors scène est toléré dans la mesure ou vous ne nuisez à personne (il est aussi toléré en radio mais n’en abusez pas)..</p>
+
+  <h2 id="art9">Art.9 : Troll</h2>
+  <p>Bénéficie d'une tolérance zéro : ban permanent et définitif du serveur. Impossibilité de faire une demande de deban.
+	(L'idiotie est tolérée dans le cadre RP de votre personnage. Au-delà le Staff considérera votre attitude comme "Troll").
+	La musique ou les soundboard utilisé afin de nuire aux joueurs sont strictement INTERDITS (vous pouvez écouter la musique dans un coin calme).
+	Merci de respecter les autres joueurs.</p>
+
+  <h2 id="art10">Art.10 : Propos</h2>
+  <p>Les insultes en jeu sont tolérées, mais doivent être justifiées par votre Roleplay (tout abus sera sanctionné).
+	En revanche tout propos raciste, homophobe, islamophobe, christianophobe, antisémite, en rapport avec la famille ou autres sont strictement interdit et sera lourdement sanctionné.</p>
+
+  <h2 id="art11">Art.11 : Carkill</h2>
+  <p>Est interdit sauf dans la situation ou quelqu'un essaye de bloquer votre véhicule avec son corps et que c’est votre seul moyen de vous échapper (vous devez quand même lui demander de ne pas rester devant votre véhicule avant de l’écraser).</p>
+
+  <h2 id="art12">Art.12 : No Fear RP</h2>
+  <p>	Il est interdit.
+	Ne pas être insensible aux éléments extérieurs tels que les tirs ou les menaces soutenues par la présence d’armes, faire preuve de lucidité et de logique, vous devez tenir à votre vie et à celle de vos collègues (Ex : si vous êtes entouré par un nombre de personnes supérieur aux personnes de votre équipe présentes sur la zone vous serez dans l’obligation de vous rendre, ou alors si vous êtes menotté, entouré de plusieurs personne la provocation est interdite). 
+	Pour imposer à une personne de se rendre elle doit être en mesure de voir l’ensemble de ses assaillants, ou au moins une partie assez importante.</p>
+
+  <h2 id="art13">Art.13 : ATM/SHOP</h2>
+  <p>Il est interdit d’obliger un civil à aller retirer de l’argent pour le lui prendre. De même, il est interdit de taxer lors du retrait ou dépôt d'argent à l'ATM.
+	Les joueurs qui interagissent avec un panneau tel que le garage, le magasin de vêtements, le marché ne sont pas braquables, il est cependant interdit d’y rester dans le but de s’y “cacher”.
+	De plus, si une sommation est engagée contre vous, il vous est interdit de poser votre argent dans l’ATM.</p>
+
+  <h2 id="art14">Art.14 : Take Down</h2>
+  <p>	Les Take down sont autorisés pour arrêter un véhicule qui refuse de se stopper quand vous lui demandez à l'oral (3 fois minimum) mais attention si vous le faites, c'est une sommation seulement pour la personne victime du take down ainsi que pour son groupe mais pas pour vous (la personne visée par le take a 30s pour engager le fight).
+	Néanmoins les take down sont pleinement autorisés une fois le fight engagé.</p>
+
+  <h2 id="art15">Art.15 : Retour zone</h2>
+  <p>Si vous êtes morts sur une action, il vous est interdit d’y retourner jusqu’à ce qu’elle soit finie.
+	(Une action est considérée comme terminée au bout de 15 min suivant la dernière interaction ou le dernier tir)</p>
+
+  <h2 id="art16">Art.16 : Déconnexion abusives</h2>
+  <p>Sont interdites, que ce soit lors d’un règlement de problème avec un membre du staff, lors d’une scène RP ou dans un fight.
+	L'utilisation de “ALT+F4” ou de “CTRL+SUPPR” est strictement interdite.</p>
+
+  <h2 id="art17">Art.17 : Safe zone</h2>
+  <p>Il est interdit de débuter une action dite conflictuelle à l’intérieur d’une Safe zone (vol de véhicule compris).
+	Néanmoins, si une personne va se réfugier dans une zone safe vous avez la possibilité de continuer l'action à l'intérieur de celle-ci.
+	Les safe zone sont :  L’hôpital, Clinique.</p>
+
+  <h2 id="art18">Art.18 : Publicité</h2>
+  <p>Il est interdit de faire de la publicité sur les plateformes du serveur (Discord, TS, forum, …). Ban assurée </p>
+
+  <h2 id="art19">Art.19 : Gunfight</h2>
+  <p>	Si aucune interaction ou tir n’est effectué pendants 15 min des sommations doivent être refaites.
+	(Poursuivre la personne pendant 15 minute sans tire ou action vocal donne annulation a l’action de nouvelle sommation devront être refaite.
+	Les alliances en fight sont interdites à toutes les factions.
+	Sauf cas particulier .
+	Il vous interdit de vous réfugier dans une maison ou un entrepôt qui n'est pas ouvrable par tout le monde (maison achetée) </p>
+
+  <h2 id="art20">Art.20 : Braquage en Hélico</h2>
+  <p>Pour faire un braquage ou des sommations en hélico (interdit aux sommations orales), vous devez avoir une équipe déjà au sol dans un rayon de 1km5 maximum..</p>
+
+  <h2 id="art21">Art.21 : Reconnaissance</h2>
+  <p>Pour reconnaître un individu vous disposez de plusieurs moyens : 
+	- Obtenir sa carte d’identité.
+	- L’avoir côtoyé pendant plusieurs semaines au sein de votre groupe ou entreprise. </p>
+
+  <h2 id="art22">Art.22 : Effectif</h2>
+  <p>Les groupes non officiels sont limités à 10 personnes et les groupes officiel sont limités à 20.
+	La gendarmerie est limitée à 30 effectifs.
+	Sur une action 20 personnes acceptées peu importe la faction. </p>
+
+  <h2 id="art23">Art.23 : Les moyens de transports aériens </h2>
+  <p>Il est interdit de farm en hélico (ou de hélitreuiller un véhicule ayant un contenu).
+	Il vous est déconseillé de passer au-dessus d’une base dite “militaire” en rase-motte (Gendarmerie/ Pompier / villes) sous peine de tir létaux immédiat. </p>
+
+  <h2 id="art24">Art.24 : Fouille</h2>
+  <p>Il vous est interdit de récupérer les tenues, gilets, sacs ou armes de la gendarmerie, des entreprises, des groupes officiels qui ont une tenue personnalisée,
+	Il est interdit de récupérer quoi que ce soit sur les pompiers.
+	Le force gunfight afin de se procurer des armes de la gendarmerie ou d'une entreprise sera lourdement puni. </p>
+
+  <h2 id="art25">Art.25 : Non-coopération</h2>
+  <p>Lorsque vous donnez un ordre à un civil ou un otage, vous devez le répéter 3 fois avant de considérer que celui-ci refuse de vous écouter. </p>
+
+  <h2 id="art26">Art.26 : Banque</h2>
+  <p>La banque peut être braquée qu’une seule et unique fois par reboot (tempête), est seulement par un groupe rebelle,bandit, gang.
+	Il doit y avoir un minimum de 10 gendarmes pour pouvoir s’y attaquer.
+	De plus, les effectifs sont soumis aux règles de limitation d’effectif sur le théâtre d’opération .
+	Quand une banque est lancée, aucune sommation n'est nécessaire dans un rayon de 1km (c'est une zone de guerre).
+	Seul le groupe qui a lancé l'attaque de la banque et gendarmerie seront acceptés sur zone, les autres groupes ainsi que les civils n'ont pas à y être.
+	La gendarmerie doit mettre fin à toutes opérations en cours si un braquage de banque est lancé (prise d'otage, contrôles...). La banque est prioritaire. </p>
+
+  <h2 id="art27">Art.27 : Action Tempête</h2>
+  <p>	Cette règle s'applique uniquement pour braquage de station, banque et prise d'otage
+	Chaque action qui mènera à un conflit entre un groupe et la gendarmerie doit être effectuée minimum 30 minutes après le reboot ou 1H30MIN avant le reboot afin d’avoir le temps de la finir, si vous abusez des tempêtes en jouant le temps admettons sur une banque vous vous exposez à certaines sanctions administratives pour non-respect de “l’article 5.” </p>
+
+  <h2 id="art28">Art.28 : Prise d'Otages</h2>
+  <p>	Les prises d’otages peuvent s’effectuer avec un minimum de 5 gendarmes (si ils sont nécessaires à celle-ci bien sur).
+	Un refus d’écouter trois fois un ordre des preneurs d’otages sera considéré comme refus d'obtempérer et l’otage pourra donc être abattu.
+	Une rançon maximum de (2 500 000 $) peut être demandée pour les personnes les plus importantes de l'île (Patron d'entreprise/État-Major de la gendarmerie), à vous de choisir les personnes les plus importantes de l’île pour faire monter la donne.
+	Les prises d'otages qui nécessitent des gendarmes sont limitées à 3 par reboot.
+	Si quelqu'un est capturé dans le but d'une revendication ou quelque chose du genre (les preneurs d'otage n’exigent rien pour l'échange de cette personne), cela n'est pas considéré comme prise d'otage mais la personne devra être relâchée vivante et avec son stuff 	Pendant une prise d'otage/un enlèvement vous avez la possibilité de faire oublier les visages, les questions, les voix, etc que les otages ont vu pendant l'interaction (en les droguant ou autre).</p>
+
+  <h2 id="art29">Art.29 : Fairplay</h2>
+  <p>Est obligatoire.
+	N'oubliez pas que, comme vous, les joueurs qui sont en face de vous sur le serveur sont des personnes derrière leur écran qui sont là pour s'amuser et se divertir, c'est pourquoi vous devez faire preuve de fairplay envers eux (ex: ne pas braquer/voler la même personne plus d'une fois dans un reboot, si une prise d'otage dure plus de 30 min et que vous ne contactez pas les personnes susceptible de négocier pour sa vie ou autre vous devrez le relâcher ; vous ne devez pas faire durer une action dans le but que le reboot y mette un terme ; après un fight, si un pompier réanime un membre du camp adversaire qui était mallette vous ne pouvez pas continué l'action avec lui...).
+
+  <h2 id="art30">Art.30 : Poursuites</h2>
+  <p>Il est interdit de ranger votre véhicule dans le garage pendant une poursuite ( delais 45 min ) (vous pouvez cependant en sortir un autre). </p>
+
+  <h2 id="art31">Art.31 : Braquages</h2>
+  <p>	Les braquages sur une ressource légale sont autorisés.
+	Vous pouvez vous emparer de 25% d’une ressource légale et 50% pour une illégale, si l’individu refuse de coopérer vous pouvez faire ce que vous voulez de lui, de sa cargaison et de son véhicule.
+	Il est interdit de camper n'importe quelle zone de farm (dealer, traitement...) pendant plus de 20 minutes </p>
+
+  <h2 id="art32">Art.32 : Plaintes</h2>
+  <p>Pour chaque plainte ou demande de remboursement les preuves (vidéo ou photo) sont obligatoires, vous pouvez les faire sur le Teamspeak ou sur discord .
+	Avant d’engager une plainte, essayez de discuter sur Teamspeak/ discord afin d’arriver à un arrangement à l'amiable. </p>
+
+  <h2 id="art33">Art.33 : Véhicules Rebelle Gang... </h2>
+  <p>Pour les mafieux et rebelles, il est interdit de vendre leurs véhicules exclusifs à une personne qui n'est pas de leur faction (Ex : vendre un ifrit à un mafieux ou à un civil).
+	Il est interdit de sortir un véhicule rebelle/mafieux (blindé ou armé) sans avoir la licence requise. </p>
+
+  <h2 id="art34">Art.34 : Vol véhicule revente </h2>
+  <p>Le propriétaire d'un véhicule qui a été volé (et seulement lui) a le droit d'ouvrir le feu sur l'individu qui a volé ce dernier.
+	Vous ne pouvez pas voler de véhicule dans une entreprise, SP, GN </p>
+
+  <h2 id="art35">Art.35 : Double faction</h2>
+  <p>Le double factions est interdit pour tout le monde sauf pour les mafieux, les rebelles et les civils bien entendu. </p>
+
+  <h2 id="art36">Art.36 : Rebelle</h2>
+  <p>Pour que votre famille soit Rebelle vous trouverez les conditions ici : 
+	- Famille 100% + licences 
+	-RP de qualité
+	-Présentation de la famille avec un but réel en jeu
+	-Respect du règlement serveur </p>
+
+  <h2 id="art37">Art.37 : Les cambriolages/perquisition de maisons et d’entrepôts </h2>
+  <p>Pour cambrioler la maison ou l’entrepôt de quelqu’un, vous pouvez suivre la personne jusqu’à sa maison, la surprendre pendant qu’elle est dedans où connaître son emplacement et l’emmener jusqu'à elle pour la cambrioler. Dans tous les cas, le propriétaire doit être sur zone (pour une perquisition aussi). En revanche, vous ne pouvez pas demander à quelqu’un qu’il vous emmène jusqu’à sa maison si vous ne connaissez pas son emplacement. </p>
+
+  <h2 id="art38">Art.38 : Events</h2>
+  <p>Chaque joueur à la possibilité de créer un évent mais pour qu’ils se fassent dans les meilleures conditions vous devrez présenter votre idée à un membre du staff au préalable (admin minimum). </p>
+
+  <h2 id="art39">Art.39 : Ripoux</h2>
+  <p>Les actions dites "ripoux" sont interdites sauf avec un accord d'un staff (admin minimum) (ex: un militaire ne peut pas vendre ou donner d'informations confidentiels à un civil), de plus, vous ne pouvez pas rentrer dans un groupe, une entreprise ou une faction dans le but de lui nuire. </p>
+
+  <h2 id="art40">Art.40 : Double action</h2>
+  <p>Les zones de combats sont limitées à deux groupes, faites attention où vous tirer afin de ne pas prendre pour cible un groupe qui passait par là sans savoir, néanmoins si un combat est déjà en cours et que vous êtes pris pour cible vous avez la possibilité de vous défendre en cas d'extrême urgence et vous devrez quitter la zone dès que possible. Si votre groupe est en négociation avec un autre (pas de fight engagé) et qu'un troisième vient se rajouter (ex: la gendarmerie arrive pendant une vente d'arme), le nouvel arrivant doit obligatoirement faire des négociations. Si les négociations n’aboutissent pas, alors les deux familles présentent initialement peuvent se défendre ensemble contre la troisième. </p>
+
+  <h2 id="art41">Art.41 : Les entreprises </h2>
+  <p>Les sacs et les camions d'entreprise peuvent être utilisés seulement pour la ressource de l'entreprise, ils ne peuvent donc pas être volés ni utilisés à but personnel par les membres de l'entreprise.
+	Les entreprises ne peuvent pas aller vendre entre 00h et 8h. 
+          ( Heure creuse ) </p>
+		  
+	<h2 id="art42">Art.42 : Les ponts </h2>
+  <p>Les ponts peuvent être contrôlées par tous les groupes mais ils ne peuvent pas être plusieurs à la contrôler en même temps (en alliance). 
+Les Sommations :
+	 
+	Dans toutes les circonstances, le groupe qui reçoit les sommations peut immédiatement répliquer alors que l’équipe qui les a effectuées devra laisser le temps aux joueurs de réagir.
+	 
+	Quatre types de sommation sont autorisés :
+	 
+	La première : la sommation orale (elle peut être effectuée en radio).
+	Elle doit être claire et précise, elle consiste à faire comprendre à l’interlocuteur adverse que sa vie est en danger, une atteinte à la vie doit être obligatoirement effectuée.
+	(Exemple : “Mets les mains sur la tête ou t’es mort”).
+	 
+	La deuxième :  la sommation par tirs.
+	Après une interaction orale avec une personne ou un groupe qui n’a pas abouti comme vous le souhaitez (ex: vous demandez à un véhicule de s’arrêter il ne le fait pas, votre groupe demande à un autre de quitter la zone après une négociation mais il ne le fait pas...) vous avez la possibilité d’effectuer une sommation par tirs (5 coups en l’air minimum sans silencieux) pour faire comprendre aux joueurs d’en face que vous êtes prêt à aller jusqu’au bout, si les personnes visées par cette sommation ne coopèrent toujours pas au bout de 10s vous pouvez engager des tirs létaux.
+	 
+	La troisième : la sommation coup de poing/tatane/menottage.
+	Pour cette sommation, le groupe qui l'effectue doit attendre que l'autre groupe ouvre les hostilités (tirs directs ou sommations) avant d'engager le combat. Attention, pour le groupe du joueur qui a été assommé ou menotté, si ses membres décident d'engager le combat, ils doivent faire en sorte que leur collègue tatane ou menotté reste en vie...
+	 
+	La quatrième : sommation take down.
+	La collision volontaire entre deux véhicules après trois demande de s’arrêter est une sommation pour la personne et le groupe qui est visé par cette collision et non pour celui qui la provoque (la personne visée par le take a 30s pour engager le fight).<p>
+
+<h2 style="text-align:center">Bon jeu à toute l'équipe de NEXUS LIFE</h2>
+
+</div>
+</div>
+</div></div>
+
+<script>
+function openReglement(){
+  document.getElementById('reglement').style.display='block';
+  var sound = document.getElementById('radioSound'); sound.currentTime = 0; sound.play().catch(()=>{});
+}
+function closeReglement(){
+  document.getElementById('reglement').style.display='none';
+  var sound = document.getElementById('radioSound'); sound.currentTime = 0; sound.play().catch(()=>{});
+}
+</script>
+
+
+
+<!-- STAFF FOOTER -->
+<div style="position:fixed;bottom:0;left:0;width:100%;background:linear-gradient(90deg,#000000,#0f2027,#000000);color:#00ffcc;text-align:center;padding:12px;font-family:'Courier New', monospace;letter-spacing:2px;border-top:1px solid rgba(0,255,200,0.3);box-shadow:0 0 10px rgba(0,255,200,0.2);animation:fadeInFooter 2s ease;">
+  <span style="font-weight:bold;text-shadow:0 0 8px #00ffcc;">[ STAFF ]</span>
+  <span style="margin-left:10px;opacity:0.8;">Fondateur TOKKA & TAKKO</span>
+</div>
+
+<style>
+@keyframes fadeInFooter{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+</style>
+
+</body>
+</html>
