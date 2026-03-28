@@ -57,6 +57,9 @@ function setVolumeDefault(){
 }
 setVolumeDefault();
 </script>
+<!-- BOUTON MUSIQUE -->
+<button id="musicBtn" onclick="toggleMusic()" style="position:fixed;top:20px;right:20px;z-index:1000;padding:10px 15px;border:none;border-radius:8px;background:rgba(0,0,0,0.7);color:#00ffcc;font-family:'Courier New', monospace;cursor:pointer;box-shadow:0 0 10px #00ffcc;">🔊</button>
+
 <div class="overlay"></div>
 <div class="container">
 <h1>Bienvenue</h1>
@@ -64,6 +67,7 @@ setVolumeDefault();
 <button class="btn" onclick="openReglement()">Règlement</button>
 <button class="btn">Nous rejoindre</button>
 <button class="btn" onclick="window.open('https://discord.gg/FjWEc4Dh','_blank')">Discord</button>
+<button class="btn" onclick="copyTS()">TeamSpeak</button>
 </div>
 
 <audio id="radioSound" preload="auto" src="radio.mp3"></audio>
@@ -353,6 +357,20 @@ function copyTS(){
   setTimeout(() => {
     msg.remove();
   }, 3000);
+}
+</script>
+<script>
+function toggleMusic(){
+  const m = document.getElementById("bgMusic");
+  const btn = document.getElementById("musicBtn");
+
+  if(m.paused){
+    m.play();
+    btn.innerText = "🔊";
+  } else {
+    m.pause();
+    btn.innerText = "🔇";
+  }
 }
 </script>
 </body>
