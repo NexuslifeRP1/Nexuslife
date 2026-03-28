@@ -64,7 +64,14 @@ setVolumeDefault();
 <button class="btn" onclick="openReglement()">Règlement</button>
 <button class="btn">Nous rejoindre</button>
 <button class="btn" onclick="window.open('https://discord.gg/FjWEc4Dh','_blank')">Discord</button>
-<button class="btn" onclick="location.href='ts3server://82.22.2.61'">TeamSpeak</button>
+<button class="btn" onclick="copyTS()">TeamSpeak</button>
+
+<script>
+function copyTS(){
+  navigator.clipboard.writeText("82.22.2.61");
+  alert("IP TeamSpeak copiée ! Ouvre TS et colle 👍");
+}
+</script>
 </div>
 
 <audio id="radioSound" preload="auto" src="radio.mp3"></audio>
