@@ -769,21 +769,31 @@ function toggleMusic(){
 /* 🔥 PRESENTATION */
 
 function openPresentation(){
-  closePage(); // ferme les autres pages
+  closePage();
   document.getElementById("presentationPage").classList.add("active");
 
-  // reset affichage (évite doublons)
-  document.getElementById("presentationZone").innerHTML = "";
+  const zone = document.getElementById("presentationZone");
+  zone.innerHTML = "";
 
-  // bloque si déjà envoyé
+  firebase.database().ref("presentations").off(); // reset
+
+  firebase.database().ref("presentations").on("child_added", snapshot => {
+    const p = snapshot.val();
+
+    zone.innerHTML += `
+      <div class="msg">
+        <div>
+          <div><b>${p.name}</b></div>
+          <div>${p.text}</div>
+          <div class="info">${p.date}</div>
+        </div>
+      </div>
+    `;
+  });
+
   if(localStorage.getItem("presentationDone")){
     document.getElementById("presentationInput").style.display = "none";
-  } else {
-    document.getElementById("presentationInput").style.display = "flex";
   }
-
-  // recharge les messages
-  loadPresentations();
 }
 
 /* ENVOYER */
