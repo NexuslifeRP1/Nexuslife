@@ -712,7 +712,6 @@ Art.10 : Les Insultes/Propos antisémites/Raciste
 </div>
 
 <!-- FIREBASE -->
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
@@ -720,10 +719,7 @@ Art.10 : Les Insultes/Propos antisémites/Raciste
 const firebaseConfig = {
   apiKey: "AIzaSyCln4tlM0g0s9CAD4QxLYNukcTCTI8ytB0",
   authDomain: "nexuslife-7a720.firebaseapp.com",
-
-  // 🔥 AJOUT IMPORTANT
   databaseURL: "https://nexuslife-7a720-default-rtdb.europe-west1.firebasedatabase.app",
-
   projectId: "nexuslife-7a720",
   storageBucket: "nexuslife-7a720.appspot.com",
   messagingSenderId: "997659493340",
@@ -740,14 +736,14 @@ function openChat(){chatPage.classList.add("active")}
 function openRules(){rulesPage.classList.add("active")}
 
 function closePage(){
-document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
 }
 
 function copyTS(){
-navigator.clipboard.writeText("82.22.2.61");
-const msg=document.getElementById("copyMsg");
-msg.style.display="block";
-setTimeout(()=>{msg.style.display="none";},2000);
+  navigator.clipboard.writeText("82.22.2.61");
+  const msg=document.getElementById("copyMsg");
+  msg.style.display="block";
+  setTimeout(()=>{msg.style.display="none";},2000);
 }
 
 /* 🎧 MUSIQUE */
@@ -758,6 +754,22 @@ document.addEventListener("DOMContentLoaded", () => {
   if(music){
     music.volume = 0.05;
   }
+
+  /* 🔥 LOAD CHAT */
+  firebase.database().ref("messages").on("child_added", snapshot => {
+    const m = snapshot.val();
+    const zone = document.getElementById("messages");
+
+    if(zone){
+      zone.innerHTML += `
+        <div class="msg">
+          <div><b>${m.name}</b></div>
+          <div>${m.text}</div>
+          <div class="info">${m.date}</div>
+        </div>
+      `;
+    }
+  });
 
   /* 🔥 LOAD PRESENTATIONS */
   firebase.database().ref("presentations").on("child_added", snapshot => {
@@ -788,6 +800,25 @@ function toggleMusic(){
   }
 }
 
+/* 🔥 CHAT */
+
+function sendMessage(){
+  const msg = document.getElementById("msg").value;
+
+  if(msg === ""){
+    alert("Écris un message !");
+    return;
+  }
+
+  firebase.database().ref("messages").push({
+    name: "Joueur",
+    text: msg,
+    date: new Date().toLocaleString()
+  });
+
+  document.getElementById("msg").value = "";
+}
+
 /* 🔥 PRESENTATION */
 
 function openPresentation(){
@@ -797,7 +828,7 @@ function openPresentation(){
   const zone = document.getElementById("presentationZone");
   zone.innerHTML = "";
 
-  firebase.database().ref("presentations").off(); // reset
+  firebase.database().ref("presentations").off();
 
   firebase.database().ref("presentations").on("child_added", snapshot => {
     const p = snapshot.val();
@@ -818,7 +849,6 @@ function openPresentation(){
   }
 }
 
-/* ENVOYER */
 function sendPresentation(){
   const msg = document.getElementById("presentationMsg").value.trim();
 
@@ -841,27 +871,6 @@ function sendPresentation(){
   localStorage.setItem("presentationDone", "true");
   document.getElementById("presentationInput").style.display = "none";
   document.getElementById("presentationMsg").value = "";
-}
-
-/* 🔥 CHARGEMENT */
-function loadPresentations(){
-  const zone = document.getElementById("presentationZone");
-
-  firebase.database().ref("presentations").off(); // évite doublons
-
-  firebase.database().ref("presentations").on("child_added", snapshot => {
-    const p = snapshot.val();
-
-    zone.innerHTML += `
-      <div class="msg">
-        <div>
-          <div><b>${p.name}</b></div>
-          <div>${p.text}</div>
-          <div class="info">${p.date}</div>
-        </div>
-      </div>
-    `;
-  });
 }
 </script>
 </body>
