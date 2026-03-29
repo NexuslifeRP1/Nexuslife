@@ -364,7 +364,7 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 <div class="category">
 <h2>💬 Communauté</h2>
 <div class="topic" onclick="openChat()">Discussions générales</div>
-<div class="topic">Présentation des joueurs</div>
+<div class="topic" onclick="openPresentation()">Présentation des joueurs</div>
 </div>
 </div>
 
@@ -667,29 +667,51 @@ Art.10 : Les Insultes/Propos antisémites/Raciste
 
 <!-- CHAT -->
 <div id="chatPage" class="page">
-<div class="chat-box">
-<button class="back-btn" onclick="closePage()">⬅ Retour</button>
-<h2 style="color:#00ffcc;">💬 Discussions générales</h2>
+  <div class="chat-box">
+    <button class="back-btn" onclick="closePage()">⬅ Retour</button>
+    <h2 style="color:#00ffcc;">💬 Discussions générales</h2>
 
-<div class="chat-layout">
-<div class="chat-users">
-<h3>En ligne</h3>
-<div id="userList"></div>
+    <div class="chat-layout">
+      
+      <div class="chat-users">
+        <h3>En ligne</h3>
+        <div id="userList"></div>
+      </div>
+
+      <div class="chat-messages">
+        <div id="messages"></div>
+
+        <div class="chat-input">
+          <input id="msg" placeholder="Écris un message...">
+          <button onclick="sendMessage()">Envoyer</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
 
-<div class="chat-messages">
-<div id="messages"></div>
+<!-- 🔥 PRESENTATION DES JOUEURS -->
+<div id="presentationPage" class="page">
+  <div class="chat-box">
 
-<div class="chat-input">
-<input id="msg" placeholder="Écris un message...">
-<button onclick="sendMessage()">Envoyer</button>
+    <button class="back-btn" onclick="closePage()">⬅ Retour</button>
+
+    <h2 style="color:#00ffcc;">🧑 Présentation des joueurs</h2>
+
+    <!-- 🔥 LISTE DES PRESENTATIONS -->
+    <div id="presentationZone"></div>
+
+    <!-- 🔥 INPUT -->
+    <div class="chat-input" id="presentationInput">
+      <input id="presentationMsg" placeholder="Présente-toi...">
+      <button onclick="sendPresentation()">Envoyer</button>
+    </div>
+
+  </div>
 </div>
 
-</div>
-</div>
-
-</div>
-</div>
+<!-- FIREBASE -->
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
