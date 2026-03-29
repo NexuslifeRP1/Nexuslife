@@ -22,15 +22,9 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   box-sizing:border-box;
 }
 
-.logo{
-  color:#00ffcc;
-  font-weight:bold;
-  letter-spacing:2px;
-}
+.logo{color:#00ffcc;font-weight:bold}
 
-.nav-links{
-  display:flex;
-}
+.nav-links{display:flex}
 
 .nav-links a{
   margin-left:20px;
@@ -39,6 +33,7 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   padding:8px 14px;
   border-radius:8px;
   background:rgba(255,255,255,0.05);
+  cursor:pointer;
 }
 
 .nav-links a:hover{
@@ -64,7 +59,6 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 
 .buttons{z-index:2}
 
-/* BUTTON */
 .btn{
   padding:14px 28px;
   margin:10px;
@@ -105,7 +99,7 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 
 .topic:hover{color:#00ffcc}
 
-/* PAGE */
+/* PAGES */
 .page{
   display:none;
   position:fixed;
@@ -152,8 +146,7 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 <div class="logo">NEXUS LIFE</div>
 
 <div class="nav-links">
-<a href="#">Accueil</a>
-<a href="#forum">Forum</a>
+<a onclick="scrollToForum()">Forum</a>
 <a onclick="openRegister()">Inscription</a>
 <a onclick="openLogin()">Connexion</a>
 </div>
@@ -187,7 +180,6 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 <!-- INSCRIPTION -->
 <div id="registerPage" class="page">
 <button onclick="closePage()">⬅ Retour</button>
-
 <h2>Créer un compte</h2>
 
 <input id="pseudo" placeholder="Pseudo"><br>
@@ -202,7 +194,6 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 <!-- LOGIN -->
 <div id="loginPage" class="page">
 <button onclick="closePage()">⬅ Retour</button>
-
 <h2>Connexion</h2>
 
 <input id="emailLogin" placeholder="Email"><br>
@@ -213,19 +204,21 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 
 <!-- CHAT -->
 <div id="chatPage" class="page">
-
 <button onclick="closePage()">⬅ Retour</button>
-
 <h2 style="color:#00ffcc;">💬 Discussions générales</h2>
 
 <div id="messages"></div>
 
 <input id="msg">
 <button onclick="sendMessage()">Envoyer</button>
-
 </div>
 
 <script>
+// navigation
+function scrollToForum(){
+  document.getElementById("forum").scrollIntoView({behavior:"smooth"});
+}
+
 function openRegister(){registerPage.style.display="block"}
 function openLogin(){loginPage.style.display="block"}
 function openChat(){chatPage.style.display="block"}
@@ -236,16 +229,31 @@ function closePage(){
   chatPage.style.display="none";
 }
 
-// 🔥 COPY TEAMSPEAK
+// COPY TS (VERSION FIX GITHUB)
 function copyTS(){
-  navigator.clipboard.writeText("82.22.2.61");
+  const ip="82.22.2.61";
 
-  const msg = document.getElementById("copyMsg");
-  msg.style.display = "block";
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(ip).then(showMsg).catch(()=>fallbackCopy(ip));
+  }else{
+    fallbackCopy(ip);
+  }
+}
 
-  setTimeout(()=>{
-    msg.style.display = "none";
-  },2000);
+function fallbackCopy(text){
+  const textarea=document.createElement("textarea");
+  textarea.value=text;
+  document.body.appendChild(textarea);
+  textarea.select();
+  document.execCommand("copy");
+  document.body.removeChild(textarea);
+  showMsg();
+}
+
+function showMsg(){
+  const msg=document.getElementById("copyMsg");
+  msg.style.display="block";
+  setTimeout(()=>msg.style.display="none",2000);
 }
 </script>
 
@@ -266,7 +274,7 @@ const db=getFirestore();
 
 let currentUser="Invité";
 
-window.register = async () => {
+window.register=async()=>{
   await createUserWithEmailAndPassword(auth,email.value,password.value);
 
   await addDoc(collection(db,"users"),{
@@ -276,18 +284,18 @@ window.register = async () => {
     ville:ville.value
   });
 
-  currentUser = pseudo.value;
+  currentUser=pseudo.value;
   alert("Compte créé !");
 };
 
-window.login = async () => {
+window.login=async()=>{
   await signInWithEmailAndPassword(auth,emailLogin.value,passwordLogin.value);
 
-  const snap = await getDocs(collection(db,"users"));
+  const snap=await getDocs(collection(db,"users"));
   snap.forEach(doc=>{
     const d=doc.data();
-    if(d.email === emailLogin.value){
-      currentUser = d.pseudo;
+    if(d.email===emailLogin.value){
+      currentUser=d.pseudo;
     }
   });
 
@@ -295,8 +303,8 @@ window.login = async () => {
   closePage();
 };
 
-window.sendMessage = async () => {
-  if(msg.value==="") return;
+window.sendMessage=async()=>{
+  if(msg.value==="")return;
 
   await addDoc(collection(db,"chat"),{
     user:currentUser,
