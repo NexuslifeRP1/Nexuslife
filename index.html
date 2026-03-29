@@ -53,19 +53,6 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   z-index:1000;
   box-sizing:border-box;
 }
-.online-players{
-  position:fixed;
-  top:80px; /* sous la navbar */
-  left:20px;
-  background:rgba(0,0,0,0.7);
-  padding:10px 15px;
-  border-radius:10px;
-  border:1px solid rgba(0,255,200,0.3);
-  color:#00ffcc;
-  font-size:16px;
-  z-index:2000;
-  box-shadow:0 0 10px rgba(0,255,200,0.2);
-}
 
 .logo{
   color:#00ffcc;
@@ -107,25 +94,66 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   background:rgba(0,0,0,0.6);
 }
 
-.buttons{z-index:2}
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:20px; /* 🔥 ESPACE PARFAIT */
+}
 
 /* BUTTON */
 .btn{
   padding:14px 28px;
-  margin:10px;
+  margin:20px; /* 🔥 AUGMENTE ICI */
   border-radius:12px;
-  border:1px solid rgba(255,255,255,0.2);
-  background:rgba(255,255,255,0.05);
-  color:white;
+  border:1px solid rgba(0,255,200,0.3);
+  background:rgba(0,0,0,0.6);
+  color:#00ffcc;
   cursor:pointer;
-  transition:0.3s;
+  transition:0.3s ease;
+  text-decoration:none;
+  position:relative;
+  overflow:hidden;
+
+  box-shadow:
+    0 0 5px #00ffcc,
+    0 0 10px rgba(0,255,200,0.3),
+    inset 0 0 5px rgba(0,255,200,0.2);
+}
+.btn:hover{
+  color:white;
+  border-color:#00ffcc;
+
+  box-shadow:
+    0 0 10px #00ffcc,
+    0 0 25px #00ffcc,
+    0 0 50px rgba(0,255,200,0.6);
+
+  transform:scale(1.07);
 }
 
-.btn:hover{
-  border-color:#00ffcc;
-  color:#00ffcc;
-  box-shadow:0 0 20px #00ffcc;
-  transform:scale(1.05);
+..btn:active{
+  transform:scale(0.95);
+}
+.btn::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-100%;
+  width:100%;
+  height:100%;
+  background:linear-gradient(120deg, transparent, rgba(0,255,200,0.5), transparent);
+  transition:0.5s;
+}
+
+.btn:hover::before{
+  left:100%;
+}
+
+/* FORUM */
+.forum{
+  padding:60px 20px;
+  max-width:1000px;
+  margin:auto;
 }
 
 .category{
@@ -289,9 +317,6 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 </head>
 
 <body>
-<div class="online-players">
-👥 Membres en ligne : 5
-</div>
 
 <!-- 🎧 MUSIQUE AJOUTÉE (RIEN MODIFIÉ AUTOUR) -->
 <audio id="bgMusic" loop>
@@ -322,6 +347,10 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 <div class="buttons">
 <button class="btn">Nous rejoindre</button>
 <button class="btn" onclick="copyTS()">TeamSpeak</button>
+<a href="https://discord.gg/9kbPmGwsZs" target="_blank" class="btn" style="text-decoration:none;">
+💬 Discord
+</a>
+
 </div>
 </div>
 
@@ -335,14 +364,13 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 <div class="category">
 <h2>💬 Communauté</h2>
 <div class="topic" onclick="openChat()">Discussions générales</div>
-<div class="topic">Présentation des joueurs</div>
+<div  class="topic" onclick="openPresentation()">Présentation des joueurs</div>
 </div>
 </div>
 
 <!-- REGLEMENT -->
 <div id="rulesPage" class="page">
 <button class="back-btn" onclick="closePage()">⬅ Retour</button>
-<pre>RÈGLEMENT...</pre>
 <div class="rules-container">
 
 <div class="rules-title">📜 RÈGLEMENT GÉNÉRAL</div>
@@ -663,6 +691,23 @@ Art.10 : Les Insultes/Propos antisémites/Raciste
 </div>
 </div>
 
+<!-- ✅ PRESENTATION (EN DEHORS DU CHAT) -->
+<div id="presentationPage" class="page">
+<div class="chat-box">
+
+<button class="back-btn" onclick="closePage()">⬅ Retour</button>
+
+<h2 style="color:#00ffcc;">🧑 Présentation des joueurs</h2>
+
+<div id="presentationZone"></div>
+
+<div class="chat-input" id="presentationInput">
+<input id="presentationMsg" placeholder="Présente-toi...">
+<button onclick="sendPresentation()">Envoyer</button>
+</div>
+
+</div>
+</div>
 
 <script>
 function openRegister(){registerPage.classList.add("active")}
@@ -671,15 +716,16 @@ function openChat(){chatPage.classList.add("active")}
 function openRules(){rulesPage.classList.add("active")}
 
 function closePage(){
-document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
 }
 
 function copyTS(){
-navigator.clipboard.writeText("82.22.2.61");
-const msg=document.getElementById("copyMsg");
-msg.style.display="block";
-setTimeout(()=>{msg.style.display="none";},2000);
+  navigator.clipboard.writeText("82.22.2.61");
+  const msg=document.getElementById("copyMsg");
+  msg.style.display="block";
+  setTimeout(()=>{msg.style.display="none";},2000);
 }
+
 /* 🎧 MUSIQUE FIX */
 let music;
 
@@ -699,13 +745,60 @@ function toggleMusic(){
     music.pause();
   }
 }
-/* ✅ AJOUT ICI */
-document.addEventListener("click", () => {
-  if(music && music.paused){
-    music.play().catch(()=>{});
+
+/* 🔥 PRESENTATION SYSTEME FORUM */
+
+function openPresentation(){
+  document.getElementById("presentationPage").classList.add("active");
+  loadPresentations();
+
+  if(localStorage.getItem("presentationDone")){
+    document.getElementById("presentationInput").style.display = "none";
   }
-});
+}
+
+function sendPresentation(){
+  const msg = document.getElementById("presentationMsg").value;
+
+  if(msg === ""){
+    alert("Écris quelque chose !");
+    return;
+  }
+
+  let presentations = JSON.parse(localStorage.getItem("presentations")) || [];
+
+  presentations.push({
+    text: msg,
+    date: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("presentations", JSON.stringify(presentations));
+  localStorage.setItem("presentationDone", "true");
+
+  document.getElementById("presentationInput").style.display = "none";
+
+  loadPresentations();
+}
+
+function loadPresentations(){
+  const zone = document.getElementById("presentationZone");
+  zone.innerHTML = "";
+
+  let presentations = JSON.parse(localStorage.getItem("presentations")) || [];
+
+  presentations.forEach(p => {
+    zone.innerHTML += `
+      <div class="msg">
+        <div>
+          <div>${p.text}</div>
+          <div class="info">${p.date}</div>
+        </div>
+      </div>
+    `;
+  });
+}
 </script>
+
 
 </body>
 </html>
