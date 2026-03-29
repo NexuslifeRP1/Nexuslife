@@ -53,6 +53,19 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   z-index:1000;
   box-sizing:border-box;
 }
+.online-players{
+  position:fixed;
+  top:80px; /* sous la navbar */
+  left:20px;
+  background:rgba(0,0,0,0.7);
+  padding:10px 15px;
+  border-radius:10px;
+  border:1px solid rgba(0,255,200,0.3);
+  color:#00ffcc;
+  font-size:16px;
+  z-index:2000;
+  box-shadow:0 0 10px rgba(0,255,200,0.2);
+}
 
 .logo{
   color:#00ffcc;
@@ -111,14 +124,8 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 .btn:hover{
   border-color:#00ffcc;
   color:#00ffcc;
-  box-shadow:0 0 10px #00ffcc;
-}
-
-/* FORUM */
-.forum{
-  padding:60px 20px;
-  max-width:1000px;
-  margin:auto;
+  box-shadow:0 0 20px #00ffcc;
+  transform:scale(1.05);
 }
 
 .category{
@@ -282,6 +289,18 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 </head>
 
 <body>
+<div class="online-players">
+👥 Joueurs en ligne : 5
+</div>
+
+<!-- 🎧 MUSIQUE AJOUTÉE (RIEN MODIFIÉ AUTOUR) -->
+<audio id="bgMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<button onclick="toggleMusic()" style="position:fixed;bottom:20px;right:20px;background:#00ffcc;border:none;padding:10px 15px;border-radius:10px;cursor:pointer;z-index:9999;">
+🎵
+</button>
 
 <div id="copyMsg">IP TeamSpeak copiée ✔</div>
 
@@ -644,6 +663,7 @@ Art.10 : Les Insultes/Propos antisémites/Raciste
 </div>
 </div>
 
+
 <script>
 function openRegister(){registerPage.classList.add("active")}
 function openLogin(){loginPage.classList.add("active")}
@@ -660,6 +680,31 @@ const msg=document.getElementById("copyMsg");
 msg.style.display="block";
 setTimeout(()=>{msg.style.display="none";},2000);
 }
+/* 🎧 MUSIQUE FIX */
+let music;
+
+document.addEventListener("DOMContentLoaded", () => {
+  music = document.getElementById("bgMusic");
+  if(music){
+    music.volume = 0.05;
+  }
+});
+
+function toggleMusic(){
+  if(!music) return;
+
+  if(music.paused){
+    music.play().catch(e => console.log(e));
+  } else {
+    music.pause();
+  }
+}
+/* ✅ AJOUT ICI */
+document.addEventListener("click", () => {
+  if(music && music.paused){
+    music.play().catch(()=>{});
+  }
+});
 </script>
 
 </body>
