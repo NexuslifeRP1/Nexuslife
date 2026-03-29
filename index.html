@@ -707,6 +707,7 @@ const msg=document.getElementById("copyMsg");
 msg.style.display="block";
 setTimeout(()=>{msg.style.display="none";},2000);
 }
+
 /* 🎧 MUSIQUE FIX */
 let music;
 
@@ -714,6 +715,28 @@ document.addEventListener("DOMContentLoaded", () => {
   music = document.getElementById("bgMusic");
   if(music){
     music.volume = 0.05;
+  }
+
+  /* 🔥 PRESENTATION LOAD (sécurisé) */
+  if(typeof firebase !== "undefined"){
+    firebase.database().ref("presentations").on("child_added", snapshot => {
+      const p = snapshot.val();
+      const zone = document.getElementById("presentationZone");
+
+      if(zone){
+        zone.innerHTML += `
+          <div class="msg">
+            <div>
+              <div><b>${p.name}</b></div>
+              <div>${p.text}</div>
+              <div class="info">${p.date}</div>
+            </div>
+          </div>
+        `;
+      }
+    });
+  } else {
+    console.log("Firebase non chargé ❌");
   }
 });
 
@@ -726,7 +749,8 @@ function toggleMusic(){
     music.pause();
   }
 }
-/* 🔥 PRESENTATION GLOBAL */
+
+/* 🔥 PRESENTATION */
 
 function openPresentation(){
   document.getElementById("presentationPage").classList.add("active");
@@ -749,6 +773,11 @@ function sendPresentation(){
     return;
   }
 
+  if(typeof firebase === "undefined"){
+    alert("Erreur Firebase non chargé !");
+    return;
+  }
+
   firebase.database().ref("presentations").push({
     name: "Joueur",
     text: msg,
@@ -758,46 +787,6 @@ function sendPresentation(){
   localStorage.setItem("presentationDone", "true");
   document.getElementById("presentationInput").style.display = "none";
 }
-
-/* 🔥 ATTEND QUE LA PAGE SOIT PRÊTE */
-document.addEventListener("DOMContentLoaded", () => {
-
-  firebase.database().ref("presentations").on("child_added", snapshot => {
-    const p = snapshot.val();
-
-    const zone = document.getElementById("presentationZone");
-
-    if(zone){
-      zone.innerHTML += `
-        <div class="msg">
-          <div>
-            <div><b>${p.name}</b></div>
-            <div>${p.text}</div>
-            <div class="info">${p.date}</div>
-          </div>
-        </div>
-      `;
-    }
-
-  });
-
-});
-	<!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-
-<script>
-  const firebaseConfig = {
-    apiKey: "TA_CLE",
-    authDomain: "TON_PROJET.firebaseapp.com",
-    databaseURL: "https://TON_PROJET-default-rtdb.firebaseio.com",
-    projectId: "TON_PROJET",
-    storageBucket: "TON_PROJET.appspot.com",
-    messagingSenderId: "XXXX",
-    appId: "XXXX"
-  };
-
-  firebase.initializeApp(firebaseConfig);
 </script>
 </body>
 </html>
