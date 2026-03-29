@@ -211,17 +211,35 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 
-// REGISTER
+// 👇 IMPORTANT : window.
+
 window.register = () => {
-  createUserWithEmailAndPassword(auth,email.value,password.value)
-  .then(()=>alert("Compte créé"))
+
+  const emailInput = document.getElementById("email").value;
+  const passwordInput = document.getElementById("password").value;
+
+  if(!emailInput.includes("@") || !emailInput.includes(".")){
+    alert("Email invalide !");
+    return;
+  }
+
+  if(passwordInput.length < 6){
+    alert("Mot de passe trop court (6 caractères minimum)");
+    return;
+  }
+
+  createUserWithEmailAndPassword(auth,emailInput,passwordInput)
+  .then(()=>alert("Compte créé !"))
   .catch(e=>alert(e.message));
 };
 
-// LOGIN
 window.login = () => {
-  signInWithEmailAndPassword(auth,email.value,password.value)
-  .then(()=>alert("Connecté"))
+
+  const emailInput = document.getElementById("email").value;
+  const passwordInput = document.getElementById("password").value;
+
+  signInWithEmailAndPassword(auth,emailInput,passwordInput)
+  .then(()=>alert("Connecté !"))
   .catch(e=>alert(e.message));
 };
 </script>
