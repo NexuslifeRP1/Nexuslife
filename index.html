@@ -690,19 +690,22 @@ Art.10 : Les Insultes/Propos antisémites/Raciste
 
 </div>
 </div>
-<!-- 🔥 FIREBASE -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyCln4tlMOg0s9CAD4QxlYNukcTCTI8ytB0",
+  apiKey: "AIzaSyCln4tlM0g0s9CAD4QxLYNukcTCTI8ytB0",
   authDomain: "nexuslife-7a720.firebaseapp.com",
+
+  // 🔥 AJOUT IMPORTANT
+  databaseURL: "https://nexuslife-7a720-default-rtdb.firebaseio.com",
+
   projectId: "nexuslife-7a720",
-  storageBucket: "nexuslife-7a720.firebasestorage.app",
+  storageBucket: "nexuslife-7a720.appspot.com",
   messagingSenderId: "997659493340",
-  appId: "1:997659493340:web:b0cd02a7ed1026133d8519",
-  measurementId: "G-PZZH7Q4PYY"
+  appId: "1:997659493340:web:b0cd02a7ed1026133d8519"
 };
 
 firebase.initializeApp(firebaseConfig);
