@@ -201,6 +201,7 @@ function showAuth(){
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCln4tlMOg0s9CAD4QxlYNukcTCTI8ytB0",
@@ -210,9 +211,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
+const db = getFirestore();
 
-// 👇 IMPORTANT : window.
+let currentUser = null;
 
+// REGISTER
 window.register = () => {
 
   const emailInput = document.getElementById("email").value;
@@ -233,16 +236,55 @@ window.register = () => {
   .catch(e=>alert(e.message));
 };
 
+// LOGIN
 window.login = () => {
 
   const emailInput = document.getElementById("email").value;
   const passwordInput = document.getElementById("password").value;
 
   signInWithEmailAndPassword(auth,emailInput,passwordInput)
-  .then(()=>alert("Connecté !"))
+  .then((user)=>{
+    alert("Connecté !");
+    currentUser = user.user.email;
+
+    document.getElementById("authBox").style.display="none";
+    document.getElementById("chatBox").style.display="block";
+  })
   .catch(e=>alert(e.message));
 };
-</script>
 
+// ENVOYER MESSAGE
+window.sendMessage = async () => {
+  const text = document.getElementById("msg").value;
+
+  if(text === "") return;
+
+  await addDoc(collection(db,"chat"),{
+    user: currentUser,
+    text: text
+  });
+
+  document.getElementById("msg").value="";
+};
+
+// AFFICHAGE LIVE
+onSnapshot(collection(db,"chat"),(snapshot)=>{
+  let html="";
+  snapshot.forEach(doc=>{
+    html += `<p><b>${doc.data().user}</b> : ${doc.data().text}</p>`;
+  });
+
+  const box = document.getElementById("messages");
+  if(box) box.innerHTML = html;
+});
+</script>
+<div id="chatBox" style="display:none;padding:20px;">
+<h2>💬 Discussions générales</h2>
+
+<div id="messages" style="height:200px;overflow:auto;border:1px solid #00ffcc;padding:10px;margin-bottom:10px;"></div>
+
+<input id="msg" placeholder="Écrire..." style="width:70%;">
+<button onclick="sendMessage()">Envoyer</button>
+</div>
 </body>
 </html>
