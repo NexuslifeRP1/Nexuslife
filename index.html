@@ -8,37 +8,42 @@
 <style>
 body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 
-/* NAVBAR FORUM */
+/* NAVBAR */
 .navbar{
   position:fixed;
   top:0;
   width:100%;
-  background:rgba(0,0,0,0.8);
-  backdrop-filter:blur(8px);
+  background:rgba(0,0,0,0.85);
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:15px 30px;
+  padding:15px 40px;
   z-index:1000;
-  border-bottom:1px solid rgba(0,255,200,0.2);
+  box-sizing:border-box;
 }
 
 .logo{
-  font-weight:bold;
   color:#00ffcc;
+  font-weight:bold;
   letter-spacing:2px;
 }
 
+.nav-links{
+  display:flex;
+}
+
 .nav-links a{
-  margin:0 15px;
+  margin-left:20px;
   text-decoration:none;
   color:white;
-  transition:0.3s;
-  cursor:pointer;
+  padding:8px 14px;
+  border-radius:8px;
+  background:rgba(255,255,255,0.05);
 }
 
 .nav-links a:hover{
   color:#00ffcc;
+  border:1px solid #00ffcc;
 }
 
 /* HERO */
@@ -48,8 +53,6 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   display:flex;
   justify-content:center;
   align-items:center;
-  flex-direction:column;
-  text-align:center;
 }
 
 .overlay{
@@ -59,11 +62,9 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   background:rgba(0,0,0,0.6);
 }
 
-.content{
-  position:relative;
-  z-index:2;
-}
+.buttons{z-index:2}
 
+/* BUTTON */
 .btn{
   padding:14px 28px;
   margin:10px;
@@ -71,18 +72,15 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   border:1px solid rgba(255,255,255,0.2);
   background:rgba(255,255,255,0.05);
   color:white;
-  backdrop-filter:blur(8px);
   cursor:pointer;
-  transition:0.3s;
 }
 
 .btn:hover{
   border-color:#00ffcc;
   color:#00ffcc;
-  box-shadow:0 0 15px rgba(0,255,200,0.4);
 }
 
-/* FORUM SECTION */
+/* FORUM */
 .forum{
   padding:60px 20px;
   max-width:1000px;
@@ -97,103 +95,157 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   padding:20px;
 }
 
-.category h2{
-  color:#00ffcc;
-}
+.category h2{color:#00ffcc}
 
 .topic{
   padding:10px;
   border-bottom:1px solid rgba(255,255,255,0.1);
+  cursor:pointer;
 }
 
-.footer{
-  text-align:center;
-  padding:20px;
-  color:#00ffcc;
-  border-top:1px solid rgba(0,255,200,0.2);
-}
+.topic:hover{color:#00ffcc}
 
-/* LOGIN POPUP */
-#authBox{
+/* PAGE */
+.page{
   display:none;
   position:fixed;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  background:#000;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#0a0f14;
+  z-index:3000;
   padding:20px;
+}
+
+/* CHAT */
+.post{
+  background:rgba(255,255,255,0.05);
+  padding:10px;
+  margin:10px 0;
+  border-radius:8px;
+}
+
+/* MESSAGE COPY */
+#copyMsg{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#000;
+  color:#00ffcc;
+  padding:12px 25px;
   border-radius:10px;
-  z-index:2000;
+  box-shadow:0 0 10px #00ffcc;
+  display:none;
+  z-index:5000;
 }
 </style>
 </head>
 
 <body>
 
+<div id="copyMsg">IP TeamSpeak copiée ✔</div>
+
+<!-- NAVBAR -->
 <div class="navbar">
 <div class="logo">NEXUS LIFE</div>
+
 <div class="nav-links">
 <a href="#">Accueil</a>
 <a href="#forum">Forum</a>
-<a href="#">Discord</a>
-<a onclick="showAuth()">Connexion</a> <!-- MODIFIÉ -->
+<a onclick="openRegister()">Inscription</a>
+<a onclick="openLogin()">Connexion</a>
 </div>
 </div>
 
+<!-- HERO -->
 <div class="hero">
 <div class="overlay"></div>
-<div class="content">
-<h1>Bienvenue sur le forum</h1>
-<button class="btn">Règlement</button>
+<div class="buttons">
 <button class="btn">Nous rejoindre</button>
-<button class="btn">Discord</button>
+<button class="btn" onclick="copyTS()">TeamSpeak</button>
 </div>
 </div>
 
+<!-- FORUM -->
 <div id="forum" class="forum">
 
 <div class="category">
 <h2>📜 Informations</h2>
 <div class="topic">Règlement du serveur</div>
-<div class="topic">Annonces officielles</div>
 </div>
 
 <div class="category">
 <h2>💬 Communauté</h2>
-<div class="topic">Discussions générales</div>
+<div class="topic" onclick="openChat()">Discussions générales</div>
 <div class="topic">Présentation des joueurs</div>
 </div>
 
-<div class="category">
-<h2>🚔 RolePlay</h2>
-<div class="topic">Gendarmerie</div>
-<div class="topic">Pompier</div>
-<div class="topic">Dépanneur</div>
 </div>
 
-</div>
+<!-- INSCRIPTION -->
+<div id="registerPage" class="page">
+<button onclick="closePage()">⬅ Retour</button>
 
-<div class="footer">
-STAFF • Fondateur TOKKA & TAKKO
+<h2>Créer un compte</h2>
+
+<input id="pseudo" placeholder="Pseudo"><br>
+<input id="age" placeholder="Âge"><br>
+<input id="ville" placeholder="Ville"><br>
+<input id="email" placeholder="Email"><br>
+<input id="password" type="password"><br>
+
+<button onclick="register()">Créer compte</button>
 </div>
 
 <!-- LOGIN -->
-<div id="authBox">
-<h3 style="color:#00ffcc;text-align:center;">Connexion</h3>
+<div id="loginPage" class="page">
+<button onclick="closePage()">⬅ Retour</button>
 
-<input id="email" placeholder="Email" style="width:100%;margin:5px 0;padding:8px;"><br>
-<input id="password" type="password" placeholder="Mot de passe" style="width:100%;margin:5px 0;padding:8px;"><br>
+<h2>Connexion</h2>
 
-<button onclick="login()" style="width:100%;margin-top:10px;">Se connecter</button>
+<input id="emailLogin" placeholder="Email"><br>
+<input id="passwordLogin" type="password"><br>
 
-<hr style="margin:15px 0;border:0;border-top:1px solid #333;">
+<button onclick="login()">Connexion</button>
+</div>
 
-<button onclick="register()" style="width:100%;">Créer un compte</button>
+<!-- CHAT -->
+<div id="chatPage" class="page">
+
+<button onclick="closePage()">⬅ Retour</button>
+
+<h2 style="color:#00ffcc;">💬 Discussions générales</h2>
+
+<div id="messages"></div>
+
+<input id="msg">
+<button onclick="sendMessage()">Envoyer</button>
+
 </div>
 
 <script>
-function showAuth(){
-  document.getElementById("authBox").style.display="block";
+function openRegister(){registerPage.style.display="block"}
+function openLogin(){loginPage.style.display="block"}
+function openChat(){chatPage.style.display="block"}
+
+function closePage(){
+  registerPage.style.display="none";
+  loginPage.style.display="none";
+  chatPage.style.display="none";
+}
+
+// 🔥 COPY TEAMSPEAK
+function copyTS(){
+  navigator.clipboard.writeText("82.22.2.61");
+
+  const msg = document.getElementById("copyMsg");
+  msg.style.display = "block";
+
+  setTimeout(()=>{
+    msg.style.display = "none";
+  },2000);
 }
 </script>
 
@@ -201,107 +253,68 @@ function showAuth(){
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCln4tlMOg0s9CAD4QxlYNukcTCTI8ytB0",
-  authDomain: "nexuslife-7a720.firebaseapp.com",
-  projectId: "nexuslife-7a720"
+const app = initializeApp({
+  apiKey:"AIzaSyCln4tlMOg0s9CAD4QxlYNukcTCTI8ytB0",
+  authDomain:"nexuslife-7a720.firebaseapp.com",
+  projectId:"nexuslife-7a720"
+});
+
+const auth=getAuth();
+const db=getFirestore();
+
+let currentUser="Invité";
+
+window.register = async () => {
+  await createUserWithEmailAndPassword(auth,email.value,password.value);
+
+  await addDoc(collection(db,"users"),{
+    pseudo:pseudo.value,
+    email:email.value,
+    age:age.value,
+    ville:ville.value
+  });
+
+  currentUser = pseudo.value;
+  alert("Compte créé !");
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getFirestore();
+window.login = async () => {
+  await signInWithEmailAndPassword(auth,emailLogin.value,passwordLogin.value);
 
-let currentUser = null;
+  const snap = await getDocs(collection(db,"users"));
+  snap.forEach(doc=>{
+    const d=doc.data();
+    if(d.email === emailLogin.value){
+      currentUser = d.pseudo;
+    }
+  });
 
-// REGISTER
-window.register = () => {
-  const emailInput = document.getElementById("email").value;
-  const passwordInput = document.getElementById("password").value;
-
-  if(!emailInput.includes("@") || !emailInput.includes(".")){
-    alert("Email invalide !");
-    return;
-  }
-
-  if(passwordInput.length < 6){
-    alert("Mot de passe trop court (6 caractères minimum)");
-    return;
-  }
-
-  createUserWithEmailAndPassword(auth,emailInput,passwordInput)
-  .then(()=>alert("Compte créé !"))
-  .catch(e=>alert(e.message));
+  alert("Connecté !");
+  closePage();
 };
 
-// LOGIN
-window.login = () => {
-  const emailInput = document.getElementById("email").value;
-  const passwordInput = document.getElementById("password").value;
-
-  signInWithEmailAndPassword(auth,emailInput,passwordInput)
-  .then((user)=>{
-    alert("Connecté !");
-    currentUser = user.user.email;
-
-    document.getElementById("authBox").style.display="none";
-  })
-  .catch(e=>alert(e.message));
-};
-
-// ENVOYER MESSAGE
 window.sendMessage = async () => {
-  const text = document.getElementById("msgChat").value;
-
-  if(text === "") return;
+  if(msg.value==="") return;
 
   await addDoc(collection(db,"chat"),{
-    user: currentUser,
-    text: text
+    user:currentUser,
+    text:msg.value
   });
 
-  document.getElementById("msgChat").value="";
+  msg.value="";
 };
 
-// AFFICHAGE LIVE
-onSnapshot(collection(db,"chat"),(snapshot)=>{
+onSnapshot(collection(db,"chat"),snap=>{
   let html="";
-  snapshot.forEach(doc=>{
-    html += `<p><b>${doc.data().user}</b> : ${doc.data().text}</p>`;
+  snap.forEach(doc=>{
+    const d=doc.data();
+    html+=`<div class="post"><b>${d.user}</b><br>${d.text}</div>`;
   });
-
-  const box = document.getElementById("messagesChat");
-  if(box) box.innerHTML = html;
+  messages.innerHTML=html;
 });
 </script>
 
-<!-- OUVERTURE PAGE CHAT -->
-<script>
-function openChat(){
-  document.getElementById("chatPage").style.display="block";
-}
-
-function closeChat(){
-  document.getElementById("chatPage").style.display="none";
-}
-</script>
-
-<!-- BOUTON DANS TON FORUM -->
-<<div class="topic" onclick="openChat()">Discussions générales</div>
-
-<!-- PAGE CHAT -->
-<div id="chatPage" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0f14;z-index:3000;padding:20px;">
-
-<button onclick="closeChat()" style="margin-bottom:20px;">⬅ Retour</button>
-
-<h2 style="color:#00ffcc;">💬 Discussions générales</h2>
-
-<div id="messagesChat" style="height:60%;overflow:auto;border:1px solid #00ffcc;padding:10px;margin:20px 0;"></div>
-
-<input id="msgChat" placeholder="Écrire un message..." style="width:70%;">
-<button onclick="sendMessage()">Envoyer</button>
-
-</div>
 </body>
 </html>
