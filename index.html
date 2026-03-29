@@ -690,7 +690,113 @@ Art.10 : Les Insultes/Propos antisémites/Raciste
 
 </div>
 </div>
+<!-- 🔥 FIREBASE (OBLIGATOIRE AVANT TON SCRIPT) -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
+<script>
+const firebaseConfig = {
+  apiKey: "TA_CLE",
+  authDomain: "TON_PROJET.firebaseapp.com",
+  databaseURL: "https://TON_PROJET-default-rtdb.firebaseio.com",
+  projectId: "TON_PROJET",
+  storageBucket: "TON_PROJET.appspot.com",
+  messagingSenderId: "XXXX",
+  appId: "XXXX"
+};
+
+firebase.initializeApp(firebaseConfig);
+</script>
+
+<!-- 🔥 TON SCRIPT -->
+<script>
+function openRegister(){registerPage.classList.add("active")}
+function openLogin(){loginPage.classList.add("active")}
+function openChat(){chatPage.classList.add("active")}
+function openRules(){rulesPage.classList.add("active")}
+
+function closePage(){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
+}
+
+function copyTS(){
+navigator.clipboard.writeText("82.22.2.61");
+const msg=document.getElementById("copyMsg");
+msg.style.display="block";
+setTimeout(()=>{msg.style.display="none";},2000);
+}
+
+/* 🎧 MUSIQUE FIX */
+let music;
+
+document.addEventListener("DOMContentLoaded", () => {
+  music = document.getElementById("bgMusic");
+  if(music){
+    music.volume = 0.05;
+  }
+
+  /* 🔥 PRESENTATION LOAD */
+  firebase.database().ref("presentations").on("child_added", snapshot => {
+    const p = snapshot.val();
+    const zone = document.getElementById("presentationZone");
+
+    if(zone){
+      zone.innerHTML += `
+        <div class="msg">
+          <div>
+            <div><b>${p.name}</b></div>
+            <div>${p.text}</div>
+            <div class="info">${p.date}</div>
+          </div>
+        </div>
+      `;
+    }
+  });
+});
+
+function toggleMusic(){
+  if(!music) return;
+
+  if(music.paused){
+    music.play().catch(e => console.log(e));
+  } else {
+    music.pause();
+  }
+}
+
+/* 🔥 PRESENTATION */
+
+function openPresentation(){
+  document.getElementById("presentationPage").classList.add("active");
+
+  if(localStorage.getItem("presentationDone")){
+    document.getElementById("presentationInput").style.display = "none";
+  }
+}
+
+function sendPresentation(){
+  const msg = document.getElementById("presentationMsg").value;
+
+  if(msg === ""){
+    alert("Écris quelque chose !");
+    return;
+  }
+
+  if(localStorage.getItem("presentationDone")){
+    alert("Déjà fait !");
+    return;
+  }
+
+  firebase.database().ref("presentations").push({
+    name: "Joueur",
+    text: msg,
+    date: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("presentationDone", "true");
+  document.getElementById("presentationInput").style.display = "none";
+}
+</script>
 <script>
 function openRegister(){registerPage.classList.add("active")}
 function openLogin(){loginPage.classList.add("active")}
