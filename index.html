@@ -217,7 +217,6 @@ let currentUser = null;
 
 // REGISTER
 window.register = () => {
-
   const emailInput = document.getElementById("email").value;
   const passwordInput = document.getElementById("password").value;
 
@@ -238,7 +237,6 @@ window.register = () => {
 
 // LOGIN
 window.login = () => {
-
   const emailInput = document.getElementById("email").value;
   const passwordInput = document.getElementById("password").value;
 
@@ -248,14 +246,13 @@ window.login = () => {
     currentUser = user.user.email;
 
     document.getElementById("authBox").style.display="none";
-    document.getElementById("chatBox").style.display="block";
   })
   .catch(e=>alert(e.message));
 };
 
 // ENVOYER MESSAGE
 window.sendMessage = async () => {
-  const text = document.getElementById("msg").value;
+  const text = document.getElementById("msgChat").value;
 
   if(text === "") return;
 
@@ -264,7 +261,7 @@ window.sendMessage = async () => {
     text: text
   });
 
-  document.getElementById("msg").value="";
+  document.getElementById("msgChat").value="";
 };
 
 // AFFICHAGE LIVE
@@ -274,10 +271,12 @@ onSnapshot(collection(db,"chat"),(snapshot)=>{
     html += `<p><b>${doc.data().user}</b> : ${doc.data().text}</p>`;
   });
 
-  const box = document.getElementById("messages");
+  const box = document.getElementById("messagesChat");
   if(box) box.innerHTML = html;
 });
 </script>
+
+<!-- OUVERTURE PAGE CHAT -->
 <script>
 function openChat(){
   document.getElementById("chatPage").style.display="block";
@@ -288,24 +287,19 @@ function closeChat(){
 }
 </script>
 
-<div id="chatBox" style="display:none;padding:20px;">
-<<div class="topic" onclick="openChat()">Discussions générales</div>
+<!-- BOUTON DANS TON FORUM -->
+<div class="topic" onclick="openChat()">Discussions générales</div>
 
-<div id="messages" style="height:200px;overflow:auto;border:1px solid #00ffcc;padding:10px;margin-bottom:10px;"></div>
-
-<input id="msg" placeholder="Écrire..." style="width:70%;">
-<button onclick="sendMessage()">Envoyer</button>
-</div>
-
+<!-- PAGE CHAT -->
 <div id="chatPage" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0f14;z-index:3000;padding:20px;">
 
 <button onclick="closeChat()" style="margin-bottom:20px;">⬅ Retour</button>
 
 <h2 style="color:#00ffcc;">💬 Discussions générales</h2>
 
-<div id="messages" style="height:60%;overflow:auto;border:1px solid #00ffcc;padding:10px;margin:20px 0;"></div>
+<div id="messagesChat" style="height:60%;overflow:auto;border:1px solid #00ffcc;padding:10px;margin:20px 0;"></div>
 
-<input id="msg" placeholder="Écrire un message..." style="width:70%;">
+<input id="msgChat" placeholder="Écrire un message..." style="width:70%;">
 <button onclick="sendMessage()">Envoyer</button>
 
 </div>
