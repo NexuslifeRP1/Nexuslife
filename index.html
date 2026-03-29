@@ -107,9 +107,59 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   left:0;
   width:100%;
   height:100%;
-  background:#0a0f14;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(10px);
   z-index:3000;
-  padding:20px;
+  justify-content:center;
+  align-items:center;
+}
+
+/* BOX */
+.auth-box{
+  background:rgba(0,0,0,0.8);
+  border:1px solid rgba(0,255,200,0.3);
+  padding:30px;
+  border-radius:15px;
+  width:320px;
+  text-align:center;
+  box-shadow:0 0 25px rgba(0,255,200,0.2);
+}
+
+.auth-box h2{color:#00ffcc}
+
+.auth-box input{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  color:white;
+  border-radius:8px;
+}
+
+.auth-box button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  background:rgba(0,255,200,0.1);
+  border:1px solid #00ffcc;
+  color:#00ffcc;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.auth-box button:hover{
+  background:#00ffcc;
+  color:black;
+}
+
+.close-btn{
+  position:absolute;
+  top:20px;
+  right:30px;
+  font-size:25px;
+  cursor:pointer;
+  color:#00ffcc;
 }
 
 /* CHAT */
@@ -120,7 +170,7 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   border-radius:8px;
 }
 
-/* MESSAGE COPY */
+/* COPY MSG */
 #copyMsg{
   position:fixed;
   top:20px;
@@ -130,7 +180,6 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   color:#00ffcc;
   padding:12px 25px;
   border-radius:10px;
-  box-shadow:0 0 10px #00ffcc;
   display:none;
   z-index:5000;
 }
@@ -177,51 +226,50 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 
 </div>
 
-<!-- INSCRIPTION -->
+<!-- REGISTER -->
 <div id="registerPage" class="page">
-<button onclick="closePage()">⬅ Retour</button>
-<h2>Créer un compte</h2>
-
-<input id="pseudo" placeholder="Pseudo"><br>
-<input id="age" placeholder="Âge"><br>
-<input id="ville" placeholder="Ville"><br>
-<input id="email" placeholder="Email"><br>
-<input id="password" type="password"><br>
-
-<button onclick="register()">Créer compte</button>
+<div class="close-btn" onclick="closePage()">✖</div>
+<div class="auth-box">
+<h2>Inscription</h2>
+<input id="pseudo" placeholder="Pseudo">
+<input id="age" placeholder="Âge">
+<input id="ville" placeholder="Ville">
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Mot de passe">
+<button onclick="register()">Créer un compte</button>
+</div>
 </div>
 
 <!-- LOGIN -->
 <div id="loginPage" class="page">
-<button onclick="closePage()">⬅ Retour</button>
+<div class="close-btn" onclick="closePage()">✖</div>
+<div class="auth-box">
 <h2>Connexion</h2>
-
-<input id="emailLogin" placeholder="Email"><br>
-<input id="passwordLogin" type="password"><br>
-
-<button onclick="login()">Connexion</button>
+<input id="emailLogin" placeholder="Email">
+<input id="passwordLogin" type="password" placeholder="Mot de passe">
+<button onclick="login()">Se connecter</button>
+</div>
 </div>
 
 <!-- CHAT -->
 <div id="chatPage" class="page">
-<button onclick="closePage()">⬅ Retour</button>
+<div class="close-btn" onclick="closePage()">✖</div>
+<div style="width:80%;max-width:800px;">
 <h2 style="color:#00ffcc;">💬 Discussions générales</h2>
-
 <div id="messages"></div>
-
 <input id="msg">
 <button onclick="sendMessage()">Envoyer</button>
 </div>
+</div>
 
 <script>
-// navigation
 function scrollToForum(){
   document.getElementById("forum").scrollIntoView({behavior:"smooth"});
 }
 
-function openRegister(){registerPage.style.display="block"}
-function openLogin(){loginPage.style.display="block"}
-function openChat(){chatPage.style.display="block"}
+function openRegister(){registerPage.style.display="flex"}
+function openLogin(){loginPage.style.display="flex"}
+function openChat(){chatPage.style.display="flex"}
 
 function closePage(){
   registerPage.style.display="none";
@@ -229,7 +277,6 @@ function closePage(){
   chatPage.style.display="none";
 }
 
-// COPY TS (VERSION FIX GITHUB)
 function copyTS(){
   const ip="82.22.2.61";
 
@@ -241,19 +288,18 @@ function copyTS(){
 }
 
 function fallbackCopy(text){
-  const textarea=document.createElement("textarea");
-  textarea.value=text;
-  document.body.appendChild(textarea);
-  textarea.select();
+  const t=document.createElement("textarea");
+  t.value=text;
+  document.body.appendChild(t);
+  t.select();
   document.execCommand("copy");
-  document.body.removeChild(textarea);
+  document.body.removeChild(t);
   showMsg();
 }
 
 function showMsg(){
-  const msg=document.getElementById("copyMsg");
-  msg.style.display="block";
-  setTimeout(()=>msg.style.display="none",2000);
+  copyMsg.style.display="block";
+  setTimeout(()=>copyMsg.style.display="none",2000);
 }
 </script>
 
