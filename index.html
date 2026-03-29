@@ -7,7 +7,39 @@
 
 <style>
 body{margin:0;font-family:Arial;background:#0a0f14;color:white}
+/* BOX REGLEMENT PRO */
+.rules-container{
+  max-width:950px;
+  margin:60px auto;
+  padding:30px;
 
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(0,255,200,0.2);
+  border-radius:15px;
+
+  box-shadow:0 0 25px rgba(0,255,200,0.08);
+}
+
+/* TITRE */
+.rules-title{
+  text-align:center;
+  color:#00ffcc;
+  font-size:28px;
+  margin-bottom:25px;
+}
+
+/* TEXTE */
+.rules-content{
+  white-space:pre-wrap;
+  line-height:1.7;
+  font-size:14px;
+  color:#ddd;
+}
+
+/* PETIT STYLE BONUS */
+.rules-content b{
+  color:#00ffcc;
+}
 /* NAVBAR */
 .navbar{
   position:fixed;
@@ -22,9 +54,15 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   box-sizing:border-box;
 }
 
-.logo{color:#00ffcc;font-weight:bold}
+.logo{
+  color:#00ffcc;
+  font-weight:bold;
+  letter-spacing:2px;
+}
 
-.nav-links{display:flex}
+.nav-links{
+  display:flex;
+}
 
 .nav-links a{
   margin-left:20px;
@@ -33,7 +71,6 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   padding:8px 14px;
   border-radius:8px;
   background:rgba(255,255,255,0.05);
-  cursor:pointer;
 }
 
 .nav-links a:hover{
@@ -59,6 +96,7 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 
 .buttons{z-index:2}
 
+/* BUTTON */
 .btn{
   padding:14px 28px;
   margin:10px;
@@ -67,11 +105,13 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   background:rgba(255,255,255,0.05);
   color:white;
   cursor:pointer;
+  transition:0.3s;
 }
 
 .btn:hover{
   border-color:#00ffcc;
   color:#00ffcc;
+  box-shadow:0 0 10px #00ffcc;
 }
 
 /* FORUM */
@@ -99,7 +139,7 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 
 .topic:hover{color:#00ffcc}
 
-/* PAGES */
+/* 🔥 POPUP PRO */
 .page{
   display:none;
   position:fixed;
@@ -107,70 +147,124 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   left:0;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.85);
-  backdrop-filter:blur(10px);
+  background:rgba(10,15,20,0.85);
   z-index:3000;
-  justify-content:center;
-  align-items:center;
+  padding:20px;
+  overflow:auto;
+
+  opacity:0;
+  transform:scale(0.95);
+  transition:0.3s ease;
+}
+
+.page.active{
+  display:block;
+  opacity:1;
+  transform:scale(1);
 }
 
 /* BOX */
-.auth-box{
-  background:rgba(0,0,0,0.8);
-  border:1px solid rgba(0,255,200,0.3);
+.modal-box{
+  max-width:420px;
+  margin:80px auto;
   padding:30px;
-  border-radius:15px;
-  width:320px;
-  text-align:center;
-  box-shadow:0 0 25px rgba(0,255,200,0.2);
-}
-
-.auth-box h2{color:#00ffcc}
-
-.auth-box input{
-  width:100%;
-  padding:10px;
-  margin:8px 0;
+  border-radius:16px;
   background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.1);
-  color:white;
-  border-radius:8px;
+  border:1px solid rgba(0,255,200,0.2);
+  backdrop-filter:blur(12px);
+  box-shadow:0 0 25px rgba(0,255,200,0.15);
 }
 
-.auth-box button{
+.modal-box h2{
+  text-align:center;
+  color:#00ffcc;
+}
+
+/* INPUT */
+.modal-box input{
   width:100%;
   padding:12px;
-  margin-top:10px;
-  background:rgba(0,255,200,0.1);
-  border:1px solid #00ffcc;
-  color:#00ffcc;
-  border-radius:8px;
-  cursor:pointer;
+  margin:6px 0;
+  border-radius:10px;
+  border:none;
+  background:rgba(255,255,255,0.08);
+  color:white;
 }
 
-.auth-box button:hover{
+/* BTN */
+.main-btn{
+  width:100%;
+  padding:12px;
+  margin-top:15px;
+  border:none;
+  border-radius:10px;
   background:#00ffcc;
   color:black;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.close-btn{
-  position:absolute;
-  top:20px;
-  right:30px;
-  font-size:25px;
-  cursor:pointer;
-  color:#00ffcc;
+.main-btn:hover{
+  box-shadow:0 0 15px #00ffcc;
 }
+
+/* BACK */
+.back-btn{
+  background:none;
+  border:none;
+  color:#aaa;
+  cursor:pointer;
+  margin-bottom:10px;
+}
+
+.back-btn:hover{color:#00ffcc}
 
 /* CHAT */
-.post{
-  background:rgba(255,255,255,0.05);
-  padding:10px;
-  margin:10px 0;
-  border-radius:8px;
+.chat-box{
+  max-width:1000px;
+  margin:40px auto;
+  background:rgba(255,255,255,0.03);
+  border-radius:15px;
+  border:1px solid rgba(0,255,200,0.2);
+  padding:20px;
 }
 
-/* COPY MSG */
+.chat-layout{
+  display:flex;
+  gap:20px;
+}
+
+.chat-users{
+  width:200px;
+  border-right:1px solid rgba(0,255,200,0.2);
+}
+
+.chat-messages{flex:1;}
+
+.chat-input{
+  display:flex;
+  gap:10px;
+  margin-top:10px;
+}
+
+.chat-input input{
+  flex:1;
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  background:rgba(255,255,255,0.08);
+  color:white;
+}
+
+.chat-input button{
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#00ffcc;
+  cursor:pointer;
+}
+
+/* MSG */
 #copyMsg{
   position:fixed;
   top:20px;
@@ -180,6 +274,7 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   color:#00ffcc;
   padding:12px 25px;
   border-radius:10px;
+  box-shadow:0 0 10px #00ffcc;
   display:none;
   z-index:5000;
 }
@@ -195,7 +290,8 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 <div class="logo">NEXUS LIFE</div>
 
 <div class="nav-links">
-<a onclick="scrollToForum()">Forum</a>
+<a href="#">Accueil</a>
+<a href="#forum">Forum</a>
 <a onclick="openRegister()">Inscription</a>
 <a onclick="openLogin()">Connexion</a>
 </div>
@@ -212,10 +308,9 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 
 <!-- FORUM -->
 <div id="forum" class="forum">
-
 <div class="category">
 <h2>📜 Informations</h2>
-<div class="topic">Règlement du serveur</div>
+<div class="topic" onclick="openRules()">Règlement du serveur</div>
 </div>
 
 <div class="category">
@@ -223,151 +318,348 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
 <div class="topic" onclick="openChat()">Discussions générales</div>
 <div class="topic">Présentation des joueurs</div>
 </div>
+</div>
+
+<!-- REGLEMENT -->
+<div id="rulesPage" class="page">
+<button class="back-btn" onclick="closePage()">⬅ Retour</button>
+<pre>RÈGLEMENT...</pre>
+<div class="rules-container">
+
+<div class="rules-title">📜 RÈGLEMENT GÉNÉRAL</div>
+
+<div class="rules-content">
+
+RÈGLEMENT GÉNÉRAL
+	 
+Tous les joueurs devront lire ces règles et les respecter sous peine de sanction en cas d'infraction.
+	Lorsque vous vous connectez sur le serveur, nous considérons que les règles sont lues et approuvées par votre personne.
+
+	 
+Art.1 : En jeu
+Un microphone est obligatoire pour jouer sur Nexus Life.
+En jeu, le seul moyen de communication autorisé est le Task Force Radio.
+L'utilisation d'over Wolf est interdite.
+	 
+	 
+Art.2 : Nom/prénom RP
+   Merci de mettre le même nom/prénom RP sur toutes les plateformes du serveur (Forum, Teamspeak, Discord, Arma).
+	Les noms de personnalités existantes, qu'elles soient réelles ou fictives ainsi que les jeux de mots, sont interdits (ex : Pablo Escobar, Jean Tempa, …).
+	Si votre nom déroge à l'une de ces deux règles, le Staff se réserve le droit de vous le changer.
+
+	 
+	 
+Art.3 : Le Freekill
+Est interdit.
+Est considéré comme "Freekill" l'action de tuer une personne sans interaction ou sommation préalable.
+Celui-ci est formellement interdit.
+	 
+	 
+Art.4 : Le Méta Gaming
+Est interdit.
+Sur Nexus Life, est considéré comme "Méta gaming" l'utilisation d'informations en jeu reçues en dehors du cadre RP (IG/Section Roleplay du forum).
+	 
+	 
+Art.5 : Le Power gaming
+Est interdit.
+Sur Nexus Life, est considéré comme étant du "Power gaming" l'exploitation de mécaniques de jeu non RP (ex : si vous sautez d’un pont et qu’un pompier vous demande votre de douleur de 1 à 10, ne répondez pas 1).
+	 
+	 
+Art.6: Les Use Bug/Glitch
+Son interdits.
+Toute découverte de bugs, aussi divers sont-ils, doivent être rapportés à un membre du staff.
+Exploiter une faille du jeu/serveur, peu importe la fin, est strictement interdit.
+
+Art.7 : Les Cheats/Hack/Injecteur/Lag Switch
+	Bénéficie d'une tolérance zéro : ban permanent et définitif du serveur. Impossibilité de faire une demande de deban.
+	Interdiction d'utiliser des logiciels externes impactant Arma III (AutoHotkey...).
+
+Art.8 : Le HRP vocal en interaction RP
+      	Il est interdit.
+	Ne pas aborder, employer de sujet ou de langage non adapté au RP contextuel du serveur (Ex : vous vous faites arrêter par la gendarmerie et vous leur dites "il faut que je déco laissez-moi partir.") vous devez trouver une alternative RP pour ne pas nuire aux autres joueurs.
+	Le HRP hors scène est toléré dans la mesure ou vous ne nuisez à personne (il est aussi toléré en radio mais n’en abusez pas).
+	 
+Art.9 : Le Troll
+	Bénéficie d'une tolérance zéro : ban permanent et définitif du serveur. Impossibilité de faire une demande de deban.
+	(L'idiotie est tolérée dans le cadre RP de votre personnage. Au-delà le Staff considérera votre attitude comme "Troll").
+	La musique ou les soundboard utilisé afin de nuire aux joueurs sont strictement INTERDITS (vous pouvez écouter la musique dans un coin calme).
+	Merci de respecter les autres joueurs.
+
+Art.10 : Les Insultes/Propos antisémites/Raciste
+	Les insultes en jeu sont tolérées, mais doivent être justifiées par votre Roleplay (tout abus sera sanctionné).
+	En revanche tout propos raciste, homophobe, islamophobe, christianophobe, antisémite, en rapport avec la famille ou autres sont strictement interdit et sera lourdement sanctionné.
+
+	Art.11 : Le carkill
+	Est interdit sauf dans la situation ou quelqu'un essaye de bloquer votre véhicule avec son corps et que c’est votre seul moyen de vous échapper (vous devez quand même lui demander de ne pas rester devant votre véhicule avant de l’écraser).
+	 
+	 
+	Art.12 : Le No Fear RP
+	Il est interdit.
+	Ne pas être insensible aux éléments extérieurs tels que les tirs ou les menaces soutenues par la présence d’armes, faire preuve de lucidité et de logique, vous devez tenir à votre vie et à celle de vos collègues (Ex : si vous êtes entouré par un nombre de personnes supérieur aux personnes de votre équipe présentes sur la zone vous serez dans l’obligation de vous rendre, ou alors si vous êtes menotté, entouré de plusieurs personne la provocation est interdite). 
+	Pour imposer à une personne de se rendre elle doit être en mesure de voir l’ensemble de ses assaillants, ou au moins une partie assez importante.
+	 
+	 
+	Art.13 : Les ATM/Shop
+	Il est interdit d’obliger un civil à aller retirer de l’argent pour le lui prendre. De même, il est interdit de taxer lors du retrait ou dépôt d'argent à l'ATM.
+	Les joueurs qui interagissent avec un panneau tel que le garage, le magasin de vêtements, le marché ne sont pas braquables, il est cependant interdit d’y rester dans le but de s’y “cacher”.
+	De plus, si une sommation est engagée contre vous, il vous est interdit de poser votre argent dans l’ATM.
+	 
+	 
+	Art.14 : Le Take Down
+	Les Take down sont autorisés pour arrêter un véhicule qui refuse de se stopper quand vous lui demandez à l'oral (3 fois minimum) mais attention si vous le faites, c'est une sommation seulement pour la personne victime du take down ainsi que pour son groupe mais pas pour vous (la personne visée par le take a 30s pour engager le fight).
+	Néanmoins les take down sont pleinement autorisés une fois le fight engagé.
+	 
+	 
+	Art.15 : Le retour sur zone/action
+	Si vous êtes morts sur une action, il vous est interdit d’y retourner jusqu’à ce qu’elle soit finie.
+	(Une action est considérée comme terminée au bout de 15 min suivant la dernière interaction ou le dernier tir).
+	 
+	 
+	Art.16 : Les déconnexions abusives
+	Sont interdites, que ce soit lors d’un règlement de problème avec un membre du staff, lors d’une scène RP ou dans un fight.
+	L'utilisation de “ALT+F4” ou de “CTRL+SUPPR” est strictement interdite.
+	 
+	 
+	Art.17 : Les Safe zone
+	Il est interdit de débuter une action dite conflictuelle à l’intérieur d’une Safe zone (vol de véhicule compris).
+	Néanmoins, si une personne va se réfugier dans une zone safe vous avez la possibilité de continuer l'action à l'intérieur de celle-ci.
+	Les safe zone sont :  L’hôpital, Clinique
+	L'obligation de sortir des ressources des coffres entreprises est interdit. Vous avez le droit de mettre en place une taxe sous forme de ressource.
+	La gendarmerie peut intervenir librement dans les safe zone.	 
+	 
+	Art.18 : La publicité
+	Il est interdit de faire de la publicité sur les plateformes du serveur (Discord, TS, forum, …). Ban assurée
+	 
+	 
+	Art.19 : Dans un gunfight
+	Si aucune interaction ou tir n’est effectué pendants 15 min des sommations doivent être refaites.
+	(Poursuivre la personne pendant 15 minute sans tire ou action vocal donne annulation a l’action de nouvelle sommation devront être refaite.
+	Les alliances en fight sont interdites à toutes les factions.
+	Sauf cas particulier .
+	Il vous interdit de vous réfugier dans une maison ou un entrepôt qui n'est pas ouvrable par tout le monde (maison achetée).
+	 
+	 
+	 
+	Art.20 : Les braquages en hélico
+	Pour faire un braquage ou des sommations en hélico (interdit aux sommations orales), vous devez avoir une équipe déjà au sol dans un rayon de 1km5 maximum.
+	 
+	 
+	Art.21 : La reconnaissance
+	Pour reconnaître un individu vous disposez de plusieurs moyens : 
+	- Obtenir sa carte d’identité.
+	- L’avoir côtoyé pendant plusieurs semaines au sein de votre groupe ou entreprise.
+	 
+	 
+	Art.22 : Limite d’effectif 
+	Les groupes non officiels sont limités à 20 personnes et les groupes officiel sont limités à 25.
+	La gendarmerie est limitée à 30 effectifs.
+	Sur une action 20 personnes acceptées peu importe la faction.
+	 
+	 
+	Art.23 : Les moyens de transports aériens
+	Il est interdit de farm en hélico (ou de hélitreuiller un véhicule ayant un contenu).
+	Il vous est déconseillé de passer au-dessus d’une base dite “militaire” en rase-motte (Gendarmerie/ Pompier / villes) sous peine de tir létaux immédiat.
+	 
+	 
+	Art.24 : La fouille d’équipement
+	Il vous est interdit de récupérer les tenues, gilets, sacs ou armes de la gendarmerie, des entreprises, des groupes officiels qui ont une tenue personnalisée,
+	Il est interdit de récupérer quoi que ce soit sur les pompiers.
+	Le force gunfight afin de se procurer des armes de la gendarmerie ou d'une entreprise sera lourdement puni.
+	 
+	 
+	Art.25 : La non-coopération
+	Lorsque vous donnez un ordre à un civil ou un otage, vous devez le répéter 3 fois avant de considérer que celui-ci refuse de vous écouter.
+	 
+	 
+	Art.26: Les braquages de banque
+	La banque peut être braquée qu’une seule et unique fois par reboot (tempête), est seulement par un groupe rebelle,bandit, gang.
+	Il doit y avoir un minimum de 10 gendarmes pour pouvoir s’y attaquer.
+	De plus, les effectifs sont soumis aux règles de limitation d’effectif sur le théâtre d’opération .
+	Quand une banque est lancée, aucune sommation n'est nécessaire dans un rayon de 1km (c'est une zone de guerre).
+	Seul le groupe qui a lancé l'attaque de la banque et gendarmerie seront acceptés sur zone, les autres groupes ainsi que les civils n'ont pas à y être.
+	La gendarmerie doit mettre fin à toutes opérations en cours si un braquage de banque est lancé (prise d'otage, contrôles...). La banque est prioritaire.
+	 
+	 
+	Art.27 : Action tempête
+	Cette règle s'applique uniquement pour braquage de station, banque et prise d'otage
+	Chaque action qui mènera à un conflit entre un groupe et la gendarmerie doit être effectuée minimum 30 minutes après le reboot ou 1H30MIN avant le reboot afin d’avoir le temps de la finir, si vous abusez des tempêtes en jouant le temps admettons sur une banque vous vous exposez à certaines sanctions administratives pour non-respect de “l’article 5.”
+	 
+	 
+	 
+	 
+	Art.28 : Prise d’otage
+	Les prises d’otages peuvent s’effectuer avec un minimum de 5 gendarmes (si ils sont nécessaires à celle-ci bien sur).
+	Un refus d’écouter trois fois un ordre des preneurs d’otages sera considéré comme refus d'obtempérer et l’otage pourra donc être abattu.
+	Une rançon maximum de (2 500 000 $) peut être demandée pour les personnes les plus importantes de l'île (Patron d'entreprise/État-Major de la gendarmerie), à vous de choisir les personnes les plus importantes de l’île pour faire monter la donne.
+	Les prises d'otages qui nécessitent des gendarmes sont limitées à 3 par reboot.
+	Si quelqu'un est capturé dans le but d'une revendication ou quelque chose du genre (les preneurs d'otage n’exigent rien pour l'échange de cette personne), cela n'est pas considéré comme prise d'otage mais la personne devra être relâchée vivante et avec son stuff 	Pendant une prise d'otage/un enlèvement vous avez la possibilité de faire oublier les visages, les questions, les voix, etc que les otages ont vu pendant l'interaction (en les droguant ou autre).	 
+	 
+	Art.29 : Le fairplay
+	Est obligatoire.
+	N'oubliez pas que, comme vous, les joueurs qui sont en face de vous sur le serveur sont des personnes derrière leur écran qui sont là pour s'amuser et se divertir, c'est pourquoi vous devez faire preuve de fairplay envers eux (ex: ne pas braquer/voler la même personne plus d'une fois dans un reboot, si une prise d'otage dure plus de 30 min et que vous ne contactez pas les personnes susceptible de négocier pour sa vie ou autre vous devrez le relâcher ; vous ne devez pas faire durer une action dans le but que le reboot y mette un terme ; après un fight, si un pompier réanime un membre du camp adversaire qui était mallette vous ne pouvez pas continué l'action avec lui...).
+	 
+	 
+	Art.30 : Les poursuites
+	Il est interdit de ranger votre véhicule dans le garage pendant une poursuite ( delais 45 min ) (vous pouvez cependant en sortir un autre).
+	 
+	 
+	 
+	 
+	Art.31 : Les braquages/taxes
+	Les braquages sur une ressource légale sont autorisés.
+	Vous pouvez vous emparer de 25% d’une ressource légale et 50% pour une illégale, si l’individu refuse de coopérer vous pouvez faire ce que vous voulez de lui, de sa cargaison et de son véhicule.
+	Il est interdit de camper n'importe quelle zone de farm (dealer, traitement...) pendant plus de 20 minutes.
+	 
+	 
+	Art.32 : Les plaintes
+	Pour chaque plainte ou demande de remboursement les preuves (vidéo ou photo) sont obligatoires, vous pouvez les faire sur le Teamspeak ou sur discord .
+	Avant d’engager une plainte, essayez de discuter sur Teamspeak/ discord afin d’arriver à un arrangement à l'amiable.
+	 
+	 
+	Art.33 : Les véhicules mafieux/rebelle
+	Pour les mafieux et rebelles, il est interdit de vendre leurs véhicules exclusifs à une personne qui n'est pas de leur faction (Ex : vendre un ifrit à un mafieux ou à un civil).
+	Il est interdit de sortir un véhicule rebelle/mafieux (blindé ou armé) sans avoir la licence requise.
+	 
+	 
+	Art.34 : Vol de véhicule et revente
+	Le propriétaire d'un véhicule qui a été volé (et seulement lui) a le droit d'ouvrir le feu sur l'individu qui a volé ce dernier.
+	Vous ne pouvez pas voler de véhicule dans une entreprise.
+	 
+
+	 
+         Art.35 : Double Factions
+	Le double factions est interdit pour tout le monde sauf pour les mafieux, les rebelles et les civils bien entendu.
+	 
+	 
+	Art.36 : Rebelle
+	Pour que votre famille soit Rebelle vous trouverez les conditions ici : 
+	- Famille 100% + licences 
+	-RP de qualité
+	-Présentation de la famille avec un but réel en jeu
+	-Respect du règlement serveur
+
+	Art.37 : Les cambriolages/perquisition de maisons et d’entrepôts
+	Pour cambrioler la maison ou l’entrepôt de quelqu’un, vous pouvez suivre la personne jusqu’à sa maison, la surprendre pendant qu’elle est dedans où connaître son emplacement et l’emmener jusqu'à elle pour la cambrioler. Dans tous les cas, le propriétaire doit être sur zone (pour une perquisition aussi). En revanche, vous ne pouvez pas demander à quelqu’un qu’il vous emmène jusqu’à sa maison si vous ne connaissez pas son emplacement.
+	 
+	 
+	Art.38 : Les évents
+	Chaque joueur à la possibilité de créer un évent mais pour qu’ils se fassent dans les meilleures conditions vous devrez présenter votre idée à un membre du staff au préalable (admin minimum).
+	 
+	 
+	 
+	 
+	Art.39 : Ripoux
+	Les actions dites "ripoux" sont interdites sauf avec un accord d'un staff (admin minimum) (ex: un militaire ne peut pas vendre ou donner d'informations confidentiels à un civil), de plus, vous ne pouvez pas rentrer dans un groupe, une entreprise ou une faction dans le but de lui nuire.
+	 
+	 
+	Art.40 : Double action
+	Les zones de combats sont limitées à deux groupes, faites attention où vous tirer afin de ne pas prendre pour cible un groupe qui passait par là sans savoir, néanmoins si un combat est déjà en cours et que vous êtes pris pour cible vous avez la possibilité de vous défendre en cas d'extrême urgence et vous devrez quitter la zone dès que possible. Si votre groupe est en négociation avec un autre (pas de fight engagé) et qu'un troisième vient se rajouter (ex: la gendarmerie arrive pendant une vente d'arme), le nouvel arrivant doit obligatoirement faire des négociations. Si les négociations n’aboutissent pas, alors les deux familles présentent initialement peuvent se défendre ensemble contre la troisième.
+	 
+	 
+	Art.41 : Les entreprises
+	Les sacs et les camions d'entreprise peuvent être utilisés seulement pour la ressource de l'entreprise, ils ne peuvent donc pas être volés ni utilisés à but personnel par les membres de l'entreprise.
+	Les entreprises ne peuvent pas aller vendre entre 00h et 8h. 
+          ( Heure creuse ) 
+	 
+	 
+	Art.42 : Les ponts
+	Les ponts peuvent être contrôlées par tous les groupes mais ils ne peuvent pas être plusieurs à la contrôler en même temps (en alliance).
+	 
+	 
+	Les Sommations :
+	 
+	Dans toutes les circonstances, le groupe qui reçoit les sommations peut immédiatement répliquer alors que l’équipe qui les a effectuées devra laisser le temps aux joueurs de réagir.
+	 
+	Quatre types de sommation sont autorisés :
+	 
+	La première : la sommation orale (elle peut être effectuée en radio).
+	Elle doit être claire et précise, elle consiste à faire comprendre à l’interlocuteur adverse que sa vie est en danger, une atteinte à la vie doit être obligatoirement effectuée.
+	(Exemple : “Mets les mains sur la tête ou t’es mort”).
+	 
+	La deuxième :  la sommation par tirs.
+	Après une interaction orale avec une personne ou un groupe qui n’a pas abouti comme vous le souhaitez (ex: vous demandez à un véhicule de s’arrêter il ne le fait pas, votre groupe demande à un autre de quitter la zone après une négociation mais il ne le fait pas...) vous avez la possibilité d’effectuer une sommation par tirs (5 coups en l’air minimum sans silencieux) pour faire comprendre aux joueurs d’en face que vous êtes prêt à aller jusqu’au bout, si les personnes visées par cette sommation ne coopèrent toujours pas au bout de 10s vous pouvez engager des tirs létaux.
+	 
+	La troisième : la sommation coup de poing/tatane/menottage.
+	Pour cette sommation, le groupe qui l'effectue doit attendre que l'autre groupe ouvre les hostilités (tirs directs ou sommations) avant d'engager le combat. Attention, pour le groupe du joueur qui a été assommé ou menotté, si ses membres décident d'engager le combat, ils doivent faire en sorte que leur collègue tatane ou menotté reste en vie...
+	 
+	La quatrième : sommation take down.
+	La collision volontaire entre deux véhicules après trois demande de s’arrêter est une sommation pour la personne et le groupe qui est visé par cette collision et non pour celui qui la provoque (la personne visée par le take a 30s pour engager le fight).
+
+                                                    Merci d'avoir pris en compte tout le RÈGLEMENT Toute faute pourra étre Sanctionner. 
 
 </div>
 
-<!-- REGISTER -->
+</div>
+</div>
+
+<!-- INSCRIPTION -->
 <div id="registerPage" class="page">
-<div class="close-btn" onclick="closePage()">✖</div>
-<div class="auth-box">
-<h2>Inscription</h2>
-<input id="pseudo" placeholder="Pseudo">
-<input id="age" placeholder="Âge">
-<input id="ville" placeholder="Ville">
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Mot de passe">
-<button onclick="register()">Créer un compte</button>
+<div class="modal-box">
+<button class="back-btn" onclick="closePage()">⬅ Retour</button>
+<h2>Créer un compte</h2>
+<input placeholder="Pseudo">
+<input placeholder="Âge">
+<input placeholder="Ville">
+<input placeholder="Avatar URL">
+<input placeholder="Email">
+<input type="password" placeholder="Mot de passe">
+<button class="main-btn">Créer compte</button>
 </div>
 </div>
 
 <!-- LOGIN -->
 <div id="loginPage" class="page">
-<div class="close-btn" onclick="closePage()">✖</div>
-<div class="auth-box">
+<div class="modal-box">
+<button class="back-btn" onclick="closePage()">⬅ Retour</button>
 <h2>Connexion</h2>
-<input id="emailLogin" placeholder="Email">
-<input id="passwordLogin" type="password" placeholder="Mot de passe">
-<button onclick="login()">Se connecter</button>
+<input placeholder="Email">
+<input type="password" placeholder="Mot de passe">
+<button class="main-btn">Connexion</button>
 </div>
 </div>
 
 <!-- CHAT -->
 <div id="chatPage" class="page">
-<div class="close-btn" onclick="closePage()">✖</div>
-<div style="width:80%;max-width:800px;">
+<div class="chat-box">
+<button class="back-btn" onclick="closePage()">⬅ Retour</button>
 <h2 style="color:#00ffcc;">💬 Discussions générales</h2>
+
+<div class="chat-layout">
+<div class="chat-users">
+<h3>En ligne</h3>
+<div id="userList"></div>
+</div>
+
+<div class="chat-messages">
 <div id="messages"></div>
-<input id="msg">
+
+<div class="chat-input">
+<input id="msg" placeholder="Écris un message...">
 <button onclick="sendMessage()">Envoyer</button>
+</div>
+
+</div>
+</div>
+
 </div>
 </div>
 
 <script>
-function scrollToForum(){
-  document.getElementById("forum").scrollIntoView({behavior:"smooth"});
-}
-
-function openRegister(){registerPage.style.display="flex"}
-function openLogin(){loginPage.style.display="flex"}
-function openChat(){chatPage.style.display="flex"}
+function openRegister(){registerPage.classList.add("active")}
+function openLogin(){loginPage.classList.add("active")}
+function openChat(){chatPage.classList.add("active")}
+function openRules(){rulesPage.classList.add("active")}
 
 function closePage(){
-  registerPage.style.display="none";
-  loginPage.style.display="none";
-  chatPage.style.display="none";
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
 }
 
 function copyTS(){
-  const ip="82.22.2.61";
-
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(ip).then(showMsg).catch(()=>fallbackCopy(ip));
-  }else{
-    fallbackCopy(ip);
-  }
+navigator.clipboard.writeText("82.22.2.61");
+const msg=document.getElementById("copyMsg");
+msg.style.display="block";
+setTimeout(()=>{msg.style.display="none";},2000);
 }
-
-function fallbackCopy(text){
-  const t=document.createElement("textarea");
-  t.value=text;
-  document.body.appendChild(t);
-  t.select();
-  document.execCommand("copy");
-  document.body.removeChild(t);
-  showMsg();
-}
-
-function showMsg(){
-  copyMsg.style.display="block";
-  setTimeout(()=>copyMsg.style.display="none",2000);
-}
-</script>
-
-<!-- FIREBASE -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, onSnapshot, getDocs } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-
-const app = initializeApp({
-  apiKey:"AIzaSyCln4tlMOg0s9CAD4QxlYNukcTCTI8ytB0",
-  authDomain:"nexuslife-7a720.firebaseapp.com",
-  projectId:"nexuslife-7a720"
-});
-
-const auth=getAuth();
-const db=getFirestore();
-
-let currentUser="Invité";
-
-window.register=async()=>{
-  await createUserWithEmailAndPassword(auth,email.value,password.value);
-
-  await addDoc(collection(db,"users"),{
-    pseudo:pseudo.value,
-    email:email.value,
-    age:age.value,
-    ville:ville.value
-  });
-
-  currentUser=pseudo.value;
-  alert("Compte créé !");
-};
-
-window.login=async()=>{
-  await signInWithEmailAndPassword(auth,emailLogin.value,passwordLogin.value);
-
-  const snap=await getDocs(collection(db,"users"));
-  snap.forEach(doc=>{
-    const d=doc.data();
-    if(d.email===emailLogin.value){
-      currentUser=d.pseudo;
-    }
-  });
-
-  alert("Connecté !");
-  closePage();
-};
-
-window.sendMessage=async()=>{
-  if(msg.value==="")return;
-
-  await addDoc(collection(db,"chat"),{
-    user:currentUser,
-    text:msg.value
-  });
-
-  msg.value="";
-};
-
-onSnapshot(collection(db,"chat"),snap=>{
-  let html="";
-  snap.forEach(doc=>{
-    const d=doc.data();
-    html+=`<div class="post"><b>${d.user}</b><br>${d.text}</div>`;
-  });
-  messages.innerHTML=html;
-});
 </script>
 
 </body>
