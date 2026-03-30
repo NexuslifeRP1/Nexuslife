@@ -711,177 +711,133 @@ Art.10 : Les Insultes/Propos antisémites/Raciste
 
   </div>
 </div>
-
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
 const firebaseConfig = {
-  apiKey: "AIza...",
-  authDomain: "...",
-  databaseURL: "...",
+  apiKey: "AIzaSyCln4tlM0g0s9CAD4QxLYNukcTCTI8ytB0",
+  authDomain: "nexuslife-7a720.firebaseapp.com",
+  databaseURL: "https://nexuslife-7a720-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "nexuslife-7a720",
+  storageBucket: "nexuslife-7a720.appspot.com",
+  messagingSenderId: "997659493340",
+  appId: "1:997659493340:web:b0cd02a7ed1026133d8519"
 };
 
 firebase.initializeApp(firebaseConfig);
 
 /* NAVIGATION */
-function openRegister(){
-  document.getElementById("registerPage").classList.add("active");
-}
-
-function openLogin(){
-  document.getElementById("loginPage").classList.add("active");
-}
-
-function openChat(){
-  document.getElementById("chatPage").classList.add("active");
-}
-
-function openRules(){
-  document.getElementById("rulesPage").classList.add("active");
-}
-
-function openPresentation(){
-  document.getElementById("presentationPage").classList.add("active");
-}
-
-function closePage(){
-  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-}
+function openRegister(){document.getElementById("registerPage").classList.add("active");}
+function openLogin(){document.getElementById("loginPage").classList.add("active");}
+function openChat(){document.getElementById("chatPage").classList.add("active");}
+function openRules(){document.getElementById("rulesPage").classList.add("active");}
+function openPresentation(){document.getElementById("presentationPage").classList.add("active");}
+function closePage(){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));}
 
 /* REGISTER */
 function register(){
   const email = document.querySelector('#registerPage input[placeholder="Email"]').value;
   const password = document.querySelector('#registerPage input[type="password"]').value;
 
+  if(email === "" || password === ""){
+    alert("Remplis tous les champs !");
+    return;
+  }
+
   firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(() => {
+    .then(()=>{
       alert("✅ Compte créé !");
       closePage();
     })
-    .catch(error => alert(error.message));
+    .catch(e=>alert(e.message));
+}
+
+/* LOGIN */
+function login(){
+  const email = document.querySelector('#loginPage input[placeholder="Email"]').value;
+  const password = document.querySelector('#loginPage input[type="password"]').value;
+
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(()=>{
+      alert("✅ Connecté !");
+      closePage();
+    })
+    .catch(e=>alert(e.message));
 }
 </script>
+
+<!-- SCRIPT PRINCIPAL -->
 <script>
 let music;
 
 document.addEventListener("DOMContentLoaded", () => {
+
   music = document.getElementById("bgMusic");
 
-  firebase.database().ref("messages").on("child_added", snapshot => {
-    const m = snapshot.val();
-    document.getElementById("messages").innerHTML += `
-      <div><b>${m.name}</b>: ${m.text}</div>
-    `;
+  // CHAT
+  firebase.database().ref("messages").on("child_added", snap=>{
+    const m = snap.val();
+    const zone = document.getElementById("messages");
+    if(zone){
+      zone.innerHTML += `<div><b>${m.name}</b> : ${m.text}</div>`;
+    }
   });
+
+  // PRESENTATIONS
+  firebase.database().ref("presentations").on("child_added", snap=>{
+    const p = snap.val();
+    const zone = document.getElementById("presentationZone");
+    if(zone){
+      zone.innerHTML += `<div><b>${p.name}</b> : ${p.text}</div>`;
+    }
+  });
+
 });
 
+/* MUSIQUE */
 function toggleMusic(){
+  if(!music) return;
   if(music.paused) music.play();
   else music.pause();
 }
-</script>
-  /* 🔥 LOAD PRESENTATIONS */
-  firebase.database().ref("presentations").on("child_added", snapshot => {
-    const p = snapshot.val();
-    const zone = document.getElementById("presentationZone");
 
-    if(zone){
-      zone.innerHTML += `
-        <div class="msg">
-          <div>
-            <div><b>${p.name}</b></div>
-            <div>${p.text}</div>
-            <div class="info">${p.date}</div>
-          </div>
-        </div>
-      `;
-    }
-  });
-});
-
-function toggleMusic(){
-  if(!music) return;
-
-  if(music.paused){
-    music.play().catch(()=>{});
-  } else {
-    music.pause();
-  }
-}
-
-/* 🔥 CHAT */
-
+/* CHAT */
 function sendMessage(){
   const msg = document.getElementById("msg").value;
 
-  if(msg === ""){
+  if(msg===""){
     alert("Écris un message !");
     return;
   }
 
   firebase.database().ref("messages").push({
-    name: "Joueur",
-    text: msg,
-    date: new Date().toLocaleString()
+    name:"Joueur",
+    text:msg,
+    date:new Date().toLocaleString()
   });
 
-  document.getElementById("msg").value = "";
+  document.getElementById("msg").value="";
 }
 
-/* 🔥 PRESENTATION */
-
-function openPresentation(){
-  closePage();
-  document.getElementById("presentationPage").classList.add("active");
-
-  const zone = document.getElementById("presentationZone");
-  zone.innerHTML = "";
-
-  firebase.database().ref("presentations").off();
-
-  firebase.database().ref("presentations").on("child_added", snapshot => {
-    const p = snapshot.val();
-
-    zone.innerHTML += `
-      <div class="msg">
-        <div>
-          <div><b>${p.name}</b></div>
-          <div>${p.text}</div>
-          <div class="info">${p.date}</div>
-        </div>
-      </div>
-    `;
-  });
-
-  if(localStorage.getItem("presentationDone")){
-    document.getElementById("presentationInput").style.display = "none";
-  }
-}
-
+/* PRESENTATION */
 function sendPresentation(){
   const msg = document.getElementById("presentationMsg").value.trim();
 
-  if(msg === ""){
+  if(msg===""){
     alert("Écris quelque chose !");
     return;
   }
 
-  if(localStorage.getItem("presentationDone")){
-    alert("Tu as déjà fait ta présentation !");
-    return;
-  }
-
   firebase.database().ref("presentations").push({
-    name: "Joueur",
-    text: msg,
-    date: new Date().toLocaleString()
+    name:"Joueur",
+    text:msg,
+    date:new Date().toLocaleString()
   });
 
-  localStorage.setItem("presentationDone", "true");
-  document.getElementById("presentationInput").style.display = "none";
-  document.getElementById("presentationMsg").value = "";
+  document.getElementById("presentationMsg").value="";
 }
 </script>
 </body>
