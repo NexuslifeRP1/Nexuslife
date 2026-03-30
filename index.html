@@ -739,16 +739,26 @@ function closePage(){document.querySelectorAll(".page").forEach(p=>p.classList.r
 
 /* REGISTER */
 function register(){
+  const pseudo = document.querySelector('#registerPage input[placeholder="Pseudo"]').value;
   const email = document.querySelector('#registerPage input[placeholder="Email"]').value;
   const password = document.querySelector('#registerPage input[type="password"]').value;
 
-  if(email === "" || password === ""){
+  if(pseudo === "" || email === "" || password === ""){
     alert("Remplis tous les champs !");
     return;
   }
 
   firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(()=>{
+    .then((userCredential)=>{
+
+      const user = userCredential.user;
+
+      // 🔥 SAUVEGARDE DU PSEUDO
+      firebase.database().ref("users/" + user.uid).set({
+        pseudo: pseudo,
+        email: email
+      });
+
       alert("✅ Compte créé !");
       closePage();
     })
@@ -807,17 +817,31 @@ function toggleMusic(){
 /* CHAT */
 function sendMessage(){
   const msg = document.getElementById("msg").value;
+  const user = firebase.auth().currentUser;
 
   if(msg===""){
     alert("Écris un message !");
     return;
   }
 
-  firebase.database().ref("messages").push({
-    name:"Joueur",
-    text:msg,
-    date:new Date().toLocaleString()
-  });
+  if(!user){
+    alert("Tu dois être connecté !");
+    return;
+  }
+
+  firebase.database().ref("users/" + user.uid).once("value")
+    .then(snapshot => {
+
+      const data = snapshot.val();
+      const pseudo = data ? data.pseudo : "Anonyme";
+
+      firebase.database().ref("messages").push({
+        name: pseudo,
+        text: msg,
+        date: new Date().toLocaleString()
+      });
+
+    });
 
   document.getElementById("msg").value="";
 }
@@ -825,17 +849,31 @@ function sendMessage(){
 /* PRESENTATION */
 function sendPresentation(){
   const msg = document.getElementById("presentationMsg").value.trim();
+  const user = firebase.auth().currentUser;
 
   if(msg===""){
     alert("Écris quelque chose !");
     return;
   }
 
-  firebase.database().ref("presentations").push({
-    name:"Joueur",
-    text:msg,
-    date:new Date().toLocaleString()
-  });
+  if(!user){
+    alert("Tu dois être connecté !");
+    return;
+  }
+
+  firebase.database().ref("users/" + user.uid).once("value")
+    .then(snapshot => {
+
+      const data = snapshot.val();
+      const pseudo = data ? data.pseudo : "Anonyme";
+
+      firebase.database().ref("presentations").push({
+        name: pseudo,
+        text: msg,
+        date: new Date().toLocaleString()
+      });
+
+    });
 
   document.getElementById("presentationMsg").value="";
 }
