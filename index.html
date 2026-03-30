@@ -651,7 +651,7 @@ Art.10 : Les Insultes/Propos antisémites/Raciste
 <input placeholder="Avatar URL">
 <input placeholder="Email">
 <input type="password" placeholder="Mot de passe">
-<button class="main-btn">Créer compte</button>
+<button class="main-btn" onclick="register()">Créer compte</button>
 </div>
 </div>
 
@@ -731,6 +731,7 @@ firebase.initializeApp(firebaseConfig);
 </script> 
 
 <script>
+
 function openRegister(){
   document.getElementById("registerPage").classList.add("active");
 }
@@ -739,18 +740,28 @@ function openLogin(){
   document.getElementById("loginPage").classList.add("active");
 }
 
-function openChat(){
-  document.getElementById("chatPage").classList.add("active");
-}
+/* 🔥 AJOUTE ICI */
+function register(){
+  const email = document.querySelector('#registerPage input[placeholder="Email"]').value;
+  const password = document.querySelector('#registerPage input[type="password"]').value;
 
-function openRules(){
-  document.getElementById("rulesPage").classList.add("active");
-}
+  if(email === "" || password === ""){
+    alert("Remplis tous les champs !");
+    return;
+  }
 
-function closePage(){
-  document.querySelectorAll(".page").forEach(p => 
-    p.classList.remove("active")
-  );
+  firebase.auth().createUserWithEmailAndPassword(email, password)
+    .then(userCredential => {
+
+      alert("✅ Compte créé !");
+
+      // 🔥 ferme la popup
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+
+    })
+    .catch(error => {
+      alert(error.message);
+    });
 }
 
 /* 🎧 MUSIQUE */
