@@ -738,12 +738,20 @@ function openPresentation(){
   closePage();
   document.getElementById("presentationPage").classList.add("active");
 
-  // 🔥 CHECK SI DEJA FAIT
-  if(localStorage.getItem("presentationDone")){
-    document.getElementById("presentationInput").style.display = "none";
-  } else {
-    document.getElementById("presentationInput").style.display = "flex";
-  }
+  const user = firebase.auth().currentUser;
+
+  if(!user) return;
+
+  firebase.database().ref("presentations").orderByChild("uid").equalTo(user.uid).once("value")
+    .then(snapshot => {
+
+      if(snapshot.exists()){
+        document.getElementById("presentationInput").style.display = "none";
+      } else {
+        document.getElementById("presentationInput").style.display = "flex";
+      }
+
+    });
 }
 function closePage(){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));}
 
@@ -878,31 +886,34 @@ function sendPresentation(){
     return;
   }
 
-  // 🔥 CHECK SI DÉJÀ FAIT
-  if(localStorage.getItem("presentationDone")){
-    alert("Tu as déjà fait ta présentation !");
-    return;
-  }
-
-  firebase.database().ref("users/" + user.uid).once("value")
+  // 🔥 CHECK SI DEJA FAIT DANS FIREBASE
+  firebase.database().ref("presentations").orderByChild("uid").equalTo(user.uid).once("value")
     .then(snapshot => {
 
-      const data = snapshot.val();
-      const pseudo = data && data.pseudo ? data.pseudo : user.email;
+      if(snapshot.exists()){
+        alert("Tu as déjà fait ta présentation !");
+        document.getElementById("presentationInput").style.display = "none";
+        return;
+      }
 
-      firebase.database().ref("presentations").push({
-        name: pseudo,
-        text: msg,
-        date: new Date().toLocaleString()
-      });
+      // 🔥 RECUP PSEUDO
+      firebase.database().ref("users/" + user.uid).once("value")
+        .then(userSnap => {
 
-      // 🔥 BLOQUE
-      localStorage.setItem("presentationDone", "true");
+          const data = userSnap.val();
+          const pseudo = data && data.pseudo ? data.pseudo : user.email;
 
-      document.getElementById("presentationMsg").value = "";
+          firebase.database().ref("presentations").push({
+            uid: user.uid, // 🔥 IMPORTANT
+            name: pseudo,
+            text: msg,
+            date: new Date().toLocaleString()
+          });
 
-      // 🔥 CACHE INPUT
-      document.getElementById("presentationInput").style.display = "none";
+          document.getElementById("presentationMsg").value = "";
+          document.getElementById("presentationInput").style.display = "none";
+
+        });
 
     });
 }
