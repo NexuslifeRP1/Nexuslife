@@ -714,9 +714,8 @@ Art.10 : Les Insultes/Propos antisémites/Raciste
 
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script> <!-- 🔥 IMPORTANT -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-
 <script>
 const firebaseConfig = {
   apiKey: "AIzaSyCln4tlM0g0s9CAD4QxLYNukcTCTI8ytB0",
@@ -728,9 +727,11 @@ const firebaseConfig = {
   appId: "1:997659493340:web:b0cd02a7ed1026133d8519"
 };
 
+<script>
 firebase.initializeApp(firebaseConfig);
-</script> 
 
+// 🔥 FORCE LE CHARGEMENT AUTH
+firebase.auth();
 <script>
 
 function openRegister(){
@@ -741,30 +742,36 @@ function openLogin(){
   document.getElementById("loginPage").classList.add("active");
 }
 
-/* 🔥 AJOUTE ICI */
-function register(){
-  const email = document.querySelector('#registerPage input[placeholder="Email"]').value;
-  const password = document.querySelector('#registerPage input[type="password"]').value;
+/* 🔥 REMPLACE register PAR ÇA */
+window.onload = function(){
 
-  if(email === "" || password === ""){
-    alert("Remplis tous les champs !");
-    return;
+  function register(){
+    const email = document.querySelector('#registerPage input[placeholder="Email"]').value;
+    const password = document.querySelector('#registerPage input[type="password"]').value;
+
+    if(email === "" || password === ""){
+      alert("Remplis tous les champs !");
+      return;
+    }
+
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then(userCredential => {
+
+        alert("✅ Compte créé !");
+        document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+
+      })
+      .catch(error => {
+        alert(error.message);
+      });
   }
 
-  firebase.auth().createUserWithEmailAndPassword(email, password)
-    .then(userCredential => {
+  // 🔥 IMPORTANT
+  window.register = register;
 
-      alert("✅ Compte créé !");
-
-      // 🔥 ferme la popup
-      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-
-    })
-    .catch(error => {
-      alert(error.message);
-    });
 }
 
+</script>
 /* 🎧 MUSIQUE */
 let music;
 
