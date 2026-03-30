@@ -747,11 +747,10 @@ function openRules(){
   document.getElementById("rulesPage").classList.add("active");
 }
 
-function copyTS(){
-  navigator.clipboard.writeText("82.22.2.61");
-  const msg=document.getElementById("copyMsg");
-  msg.style.display="block";
-  setTimeout(()=>{msg.style.display="none";},2000);
+function closePage(){
+  document.querySelectorAll(".page").forEach(p => 
+    p.classList.remove("active")
+  );
 }
 
 /* 🎧 MUSIQUE */
