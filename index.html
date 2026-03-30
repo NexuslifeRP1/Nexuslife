@@ -26,7 +26,7 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   text-align:center;
   color:#00ffcc;
   font-size:28px;
-  margin-bottom:25px;
+  margin-bottom:25px;Fs
 }
 
 /* TEXTE */
@@ -841,11 +841,16 @@ function sendMessage(){
     return;
   }
 
+  console.log("USER UID =", user.uid); // 🔥 ICI
+
   firebase.database().ref("users/" + user.uid).once("value")
     .then(snapshot => {
 
       const data = snapshot.val();
-      const pseudo = data ? data.pseudo : "Anonyme";
+
+      console.log("DATA =", data); // 🔥 ICI
+
+      const pseudo = data && data.pseudo ? data.pseudo : user.email;
 
       firebase.database().ref("messages").push({
         name: pseudo,
