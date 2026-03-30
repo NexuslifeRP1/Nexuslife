@@ -734,7 +734,17 @@ function openRegister(){document.getElementById("registerPage").classList.add("a
 function openLogin(){document.getElementById("loginPage").classList.add("active");}
 function openChat(){document.getElementById("chatPage").classList.add("active");}
 function openRules(){document.getElementById("rulesPage").classList.add("active");}
-function openPresentation(){document.getElementById("presentationPage").classList.add("active");}
+function openPresentation(){
+  closePage();
+  document.getElementById("presentationPage").classList.add("active");
+
+  // 🔥 CHECK SI DEJA FAIT
+  if(localStorage.getItem("presentationDone")){
+    document.getElementById("presentationInput").style.display = "none";
+  } else {
+    document.getElementById("presentationInput").style.display = "flex";
+  }
+}
 function closePage(){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));}
 
 /* REGISTER */
@@ -863,11 +873,17 @@ function sendPresentation(){
     return;
   }
 
+  // 🔥 CHECK SI DÉJÀ FAIT
+  if(localStorage.getItem("presentationDone")){
+    alert("Tu as déjà fait ta présentation !");
+    return;
+  }
+
   firebase.database().ref("users/" + user.uid).once("value")
     .then(snapshot => {
 
       const data = snapshot.val();
-      const pseudo = data ? data.pseudo : "Anonyme";
+      const pseudo = data && data.pseudo ? data.pseudo : user.email;
 
       firebase.database().ref("presentations").push({
         name: pseudo,
@@ -875,9 +891,15 @@ function sendPresentation(){
         date: new Date().toLocaleString()
       });
 
-    });
+      // 🔥 BLOQUE
+      localStorage.setItem("presentationDone", "true");
 
-  document.getElementById("presentationMsg").value="";
+      document.getElementById("presentationMsg").value = "";
+
+      // 🔥 CACHE INPUT
+      document.getElementById("presentationInput").style.display = "none";
+
+    });
 }
 </script>
 </body>
