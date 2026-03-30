@@ -132,7 +132,7 @@ body{margin:0;font-family:Arial;background:#0a0f14;color:white}
   transform:scale(1.07);
 }
 
-..btn:active{
+.btn:active{
   transform:scale(0.95);
 }
 .btn::before{
@@ -731,13 +731,20 @@ firebase.initializeApp(firebaseConfig);
 </script> 
 
 <script>
-function openRegister(){registerPage.classList.add("active")}
-function openLogin(){loginPage.classList.add("active")}
-function openChat(){chatPage.classList.add("active")}
-function openRules(){rulesPage.classList.add("active")}
+function openRegister(){
+  document.getElementById("registerPage").classList.add("active");
+}
 
-function closePage(){
-  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"))
+function openLogin(){
+  document.getElementById("loginPage").classList.add("active");
+}
+
+function openChat(){
+  document.getElementById("chatPage").classList.add("active");
+}
+
+function openRules(){
+  document.getElementById("rulesPage").classList.add("active");
 }
 
 function copyTS(){
